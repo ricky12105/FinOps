@@ -1,4 +1,4 @@
-# Enterprise FinOps & Platform Observability POC
+# Enterprise FinOps & Platform Observability POC/Demo
 
 A customer-owned FinOps, multi-platform observability, anomaly detection, and governed-action platform built natively on **Microsoft Fabric**, **OneLake**, **Direct Lake**, **Power BI (PBIR/TMDL)**, **Power Automate**, and **Fabric Data Agent**—spanning Azure Cost Management (FOCUS 1.0r2 & ActualCost), Azure Databricks & Unity Catalog, Microsoft Fabric FUAM, and Microsoft Foundry (Azure AI).
 
