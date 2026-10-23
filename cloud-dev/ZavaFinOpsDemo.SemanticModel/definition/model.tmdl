@@ -1,0 +1,43 @@
+/// Zava customer-owned FinOps demo. Direct Lake on pinned OneLake serving tables; authoritative exact financial source retained, four-decimal presentation bridge explicit. Manual historical operational snapshots, fictional/effective-dated context, no fact-to-fact allocation, retrospective three-period forecast qualification. Native action report integration remains gated.
+model ZavaFinOpsDemo
+	culture: en-US
+	defaultPowerBIDataSourceVersion: powerBI_V3
+	discourageImplicitMeasures
+	sourceQueryCulture: en-US
+	directLakeBehavior: directLakeOnly
+	dataAccessOptions
+		legacyRedirects
+		returnErrorValuesAsNull
+
+annotation PBI_ProTooling = ["MCP-PBIModeling"]
+
+ref table Financial
+ref table Calendar
+ref table Service
+ref table Resource
+ref table BusinessContext
+ref table Reconciliation
+ref table SourceHealth
+ref table Warehouse
+ref table Capacity
+ref table Source
+ref table 'Operational View'
+ref table 'Databricks Usage'
+ref table 'Databricks Queries'
+ref table 'Fabric Operations'
+ref table Forecast
+ref table ForecastBacktest
+ref table 'Forecast Metrics'
+ref table Scenario
+ref table ResourceInventory
+ref table NativeTagRequest
+ref table ActionAudit
+ref table 'Business Context Candidates'
+ref table 'Business Context Options'
+ref table 'Action Mode'
+ref table Confirmation
+ref table 'Unity Catalog Inventory'
+ref table 'Fabric Estate Inventory'
+ref table 'Daily RG Anomalies'
+ref table 'Anomalies & Insights'
+ref table 'Foundry AI Usage'

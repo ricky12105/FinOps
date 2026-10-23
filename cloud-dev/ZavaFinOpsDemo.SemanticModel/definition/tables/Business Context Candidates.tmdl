@@ -1,0 +1,42 @@
+/// Read-only controlled internal-assignment inputs; same existing UDF and server-side authorization, no new assignment tests.
+table 'Business Context Candidates'
+	lineageTag: 04ef6bef-4a53-47bb-a011-7f856bb01ea5
+
+	/// Existing UDF single-resource input; backend authorization is authoritative.
+	measure 'Selected Resource Key' = IF(HASONEVALUE('Business Context Candidates'[Resource Key]),SELECTEDVALUE('Business Context Candidates'[Resource Key]))
+		formatString: @
+		lineageTag: 8e03c90f-f421-469e-bdce-77d8e9c7d696
+
+	/// Optimistic expected-version input. Snapshot must refresh after saved assignments.
+	measure 'Selected Resource Version' = IF(HASONEVALUE('Business Context Candidates'[Resource Key]),SELECTEDVALUE('Business Context Candidates'[Resource Version]))
+		formatString: 0
+		lineageTag: 227fd1ee-da08-41e7-bfa9-aec8da93a760
+
+	column 'Resource Key'
+		dataType: string
+		lineageTag: 227838f6-aae6-42b0-82e9-0d208c717630
+		sourceColumn: ResourceKey
+
+	column 'Resource ID'
+		dataType: string
+		lineageTag: 1219e831-4c5c-473b-b224-1a8e60060e8b
+		sourceColumn: ResourceId
+
+	column Resource
+		dataType: string
+		lineageTag: dddcc0fb-683c-4de9-8839-2d195484c2ca
+		sourceColumn: Resource
+
+	column 'Resource Version'
+		dataType: int64
+		lineageTag: c41b39be-b727-40d6-984e-0016a5a5d67a
+		summarizeBy: none
+		sourceColumn: ResourceVersion
+
+	partition 'Business Context Candidates' = entity
+		mode: directLake
+		source
+			entityName: demo_business_context_candidates_75b4187f7d3f
+			schemaName: demo
+			expressionSource: 'DirectLake - ZavaFinOpsDemo'
+

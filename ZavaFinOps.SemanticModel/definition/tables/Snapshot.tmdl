@@ -1,0 +1,97 @@
+/// One selected generation per billing month. Audit totals are subscription-wide USD. September is provisional.
+table Snapshot
+	lineageTag: 0b01755f-fdd1-48a8-acdc-f5b2740496c0
+
+	/// Selected billing periods, entire subscription. Exact source total rounded once per period to four decimals.
+	measure 'Source USD' = SUM(Snapshot[Source Billed Cost])
+		formatString: $#,0.0000;($#,0.0000);$0.0000
+		displayFolder: Reconciliation
+		lineageTag: f18a5cf4-913b-4e5d-89fb-44278854c36b
+
+	/// Entire subscription for selected periods; intentionally ignores BU, resource, meter and charge-date filters.
+	measure 'Model USD' = VAR PeriodsSelected = VALUES(Snapshot[Period]) RETURN CALCULATE([Billed USD], REMOVEFILTERS(), TREATAS(PeriodsSelected, Snapshot[Period]))
+		formatString: $#,0.0000;($#,0.0000);$0.0000
+		displayFolder: Reconciliation
+		lineageTag: 1eed0ae9-f2d1-4e3d-8765-dd7708ec93a3
+
+	/// Sum of per-row rounded amounts minus source total rounded once per period. Not a balancing charge.
+	measure 'Rounding USD' = SUM(Snapshot[Rounding Delta])
+		formatString: $0.0000;($0.0000);$0.0000
+		displayFolder: Reconciliation
+		lineageTag: 0c0508ad-abb5-4a99-badf-2d81c6863d38
+
+	/// Must be zero for selected periods, independent of business filters.
+	measure 'Unexplained USD' = [Model USD] - [Source USD] - [Rounding USD]
+		formatString: $0.0000;($0.0000);$0.0000
+		displayFolder: Reconciliation
+		lineageTag: e5dead9e-5d6c-4f86-afe8-7b9a9fc18464
+
+	measure 'Source Row Count' = SUM(Snapshot[Source Rows])
+		formatString: #,0
+		displayFolder: Reconciliation
+		lineageTag: 4467a1a0-f58c-43e2-b335-46309085e422
+
+	/// Latest selected export generation date, not the local build timestamp.
+	measure 'Source As Of' = "Source export: " & LEFT(MAX(Snapshot[Submitted UTC]), 10) & " UTC | USD | September provisional"
+		displayFolder: Context
+		lineageTag: db8da43e-246f-43da-9228-b637656c6b1f
+
+	column Period
+		dataType: string
+		lineageTag: 2f7acf8b-f04e-4d24-9c16-ea078bba735c
+		sourceColumn: Period
+
+	column 'Source Rows'
+		dataType: int64
+		isHidden
+		lineageTag: ab093f02-79ab-4a0e-9c58-83dd81b7b355
+		sourceColumn: SourceRows
+
+	column 'Source Billed Cost'
+		dataType: decimal
+		isHidden
+		lineageTag: 018e362f-8aff-4fff-9316-85e390d07604
+		sourceColumn: SourceBilledCost
+
+	column 'Expected Model Cost'
+		dataType: decimal
+		isHidden
+		lineageTag: 3e325047-05a7-4b63-b0e7-084d14226d8a
+		sourceColumn: ModelBilledCost
+
+	column 'Rounding Delta'
+		dataType: decimal
+		isHidden
+		lineageTag: 891931cb-b173-4e17-a6bd-18ace2c0fc51
+		sourceColumn: RoundingDelta
+
+	column Status
+		dataType: string
+		lineageTag: 14c01fa3-7726-404f-8b32-bef25ed32cfc
+		sourceColumn: Status
+
+	column 'Submitted UTC'
+		dataType: string
+		lineageTag: 5d5a8a98-13c0-49f6-9bf4-e60bd32ccbf5
+		sourceColumn: SubmittedUTC
+
+	column 'Run ID'
+		dataType: string
+		isHidden
+		lineageTag: 40c4c121-52af-4007-ae63-2b450bf64f5b
+		sourceColumn: RunId
+
+	partition Snapshot = m
+		mode: import
+		source =
+				let
+				    IsCloudSource = Text.StartsWith(DataFolder, "sql://", Comparer.OrdinalIgnoreCase),
+				    Source = if IsCloudSource then
+				        let Parts = Text.Split(Text.AfterDelimiter(DataFolder, "sql://"), "|")
+				        in Sql.Database(Parts{0}, Parts{1}, [Query = "SELECT * FROM dbo.DemoSnapshot"])
+				        else Csv.Document(File.Contents(DataFolder & "\snapshots.csv"), [Delimiter = ",", Encoding = 65001, QuoteStyle = QuoteStyle.Csv]),
+				    Headers = if IsCloudSource then Source else Table.PromoteHeaders(Source, [PromoteAllScalars = true]),
+				    Typed = Table.TransformColumnTypes(Headers, {{"SourceRows", Int64.Type}, {"SourceBilledCost", Currency.Type}, {"ModelBilledCost", Currency.Type}, {"RoundingDelta", Currency.Type}}, "en-US")
+				in
+				    Typed
+

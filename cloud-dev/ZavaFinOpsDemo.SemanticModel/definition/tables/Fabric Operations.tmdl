@@ -1,0 +1,93 @@
+/// Unique FUAM day/capacity/workspace/item/kind/operation source grain, Aug 17-28 2026. Reported CU source measure is not billed USD or CPU utilization.
+table 'Fabric Operations'
+	lineageTag: becc8db7-8d20-4d7b-bd18-06551a75f04e
+
+	/// FUAM TotalCUs source measure, displayed to four decimals. Do not interpret as dollars, CPU-percent or licensed capacity size.
+	measure 'Observed CUs' = SUM('Fabric Operations'[Reported CU Value])
+		formatString: #,##0.00
+		lineageTag: ba53bf29-d10f-48c4-941c-644aa79104b1
+
+	/// Source operation counts in the bounded Aug 17-28 slice; not summed user counts.
+	measure 'Fabric Operation Count' = SUM('Fabric Operations'[Operation Count])
+		formatString: #,##0
+		lineageTag: 1b40f019-f7b3-4261-bc1d-88973d21aff1
+
+	/// Source failure count; no allocation to billed cost.
+	measure 'Failed Fabric Operations' = SUM('Fabric Operations'[Failed Count])
+		formatString: #,##0
+		lineageTag: 730def0f-8cbf-4801-b632-3c9bb5f2a3a0
+
+	/// Reported operation-grain throttling minutes; may overlap in time and are not unique wall-clock downtime.
+	measure 'Throttling Minutes' = SUM('Fabric Operations'[Throttling Minutes Value])
+		formatString: #,##0.00
+		lineageTag: bb0e9e76-9937-4d72-a057-ffa4bbcf37de
+
+	column Date
+		dataType: dateTime
+		lineageTag: 8528a7cf-88e2-48f0-8842-7221e76a2b19
+		sourceColumn: Date
+
+	column 'Entity Key'
+		dataType: int64
+		isHidden
+		lineageTag: 1934c515-4710-45bc-ab96-435c05961ce3
+		sourceColumn: EntityKey
+
+	column 'Capacity Key'
+		dataType: int64
+		isHidden
+		lineageTag: 09e957a9-15fd-4fb9-ae3d-d09b9b4fe8d3
+		sourceColumn: CapacityKey
+
+	column 'Source Key'
+		dataType: int64
+		isHidden
+		lineageTag: e8723578-11c6-47e8-bdd2-597e6546c3a2
+		sourceColumn: SourceKey
+
+	column 'Item Kind'
+		dataType: string
+		lineageTag: c9f8e7d6-1234-4a5b-8c9d-0e1f2a3b4c5d
+		sourceColumn: ItemKind
+
+	column Operation
+		dataType: string
+		lineageTag: 13470e85-dfab-44c6-86f6-ee4003a33b71
+		sourceColumn: Operation
+
+	column 'Reported CU Value'
+		dataType: decimal
+		isHidden
+		lineageTag: 6ed946d0-b323-4fb9-9d83-5a66bd463421
+		sourceColumn: ReportedCUValue
+
+	column 'Operation Count'
+		dataType: int64
+		isHidden
+		lineageTag: 1fa001bb-819b-421c-a240-cedb54ff41d1
+		sourceColumn: OperationCount
+
+	column 'Failed Count'
+		dataType: int64
+		isHidden
+		lineageTag: 80b051d8-48df-489b-8bbf-ac7b8744d3f0
+		sourceColumn: FailedCount
+
+	column 'Throttling Minutes Value'
+		dataType: decimal
+		isHidden
+		lineageTag: 6a0d6f7e-2176-404f-a32f-d440e7c34052
+		sourceColumn: ThrottlingMinutes
+
+	column 'Unit Basis'
+		dataType: string
+		lineageTag: cd0619f2-a8f3-4181-b8a5-87a0971cc26b
+		sourceColumn: UnitBasis
+
+	partition 'Fabric Operations' = entity
+		mode: directLake
+		source
+			entityName: demo_fabric_operations_75b4187f7d3f
+			schemaName: demo
+			expressionSource: 'DirectLake - ZavaFinOpsDemo'
+

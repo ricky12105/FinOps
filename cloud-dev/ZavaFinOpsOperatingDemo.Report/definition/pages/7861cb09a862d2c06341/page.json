@@ -1,0 +1,20 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/page/2.1.0/schema.json",
+  "name": "7861cb09a862d2c06341",
+  "displayName": "Planning",
+  "displayOption": "FitToPage",
+  "width": 1920,
+  "height": 1080,
+  "visualInteractions": [
+    {
+      "source": "cc0d10179597365e381c",
+      "target": "9028ac7449ddd38ee577",
+      "type": "NoFilter"
+    },
+    {
+      "source": "cc0d10179597365e381c",
+      "target": "a97187db51429996156b",
+      "type": "NoFilter"
+    }
+  ]
+}

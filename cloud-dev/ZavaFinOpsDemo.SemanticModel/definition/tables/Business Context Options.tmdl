@@ -1,0 +1,41 @@
+/// Controlled option IDs and business labels from existing SQL; backend validates allowed/active option.
+table 'Business Context Options'
+	lineageTag: d67effed-6e5c-4544-a955-7452353f9368
+
+	/// Selected controlled option ID for the existing UDF.
+	measure 'Selected Context Option ID' = IF(HASONEVALUE('Business Context Options'[Context Option ID]),SELECTEDVALUE('Business Context Options'[Context Option ID]))
+		formatString: @
+		lineageTag: 5c59eaf5-6f20-4a4f-9c93-b36d73df1dbe
+
+	column 'Context Option ID'
+		dataType: string
+		lineageTag: 66e5b986-d74f-47ce-865a-19413936d43b
+		sourceColumn: ContextOptionId
+
+	column 'Business Unit'
+		dataType: string
+		lineageTag: 682bfeb5-958d-4d0b-93b9-b1d68538acf5
+		sourceColumn: BusinessUnit
+
+	column Initiative
+		dataType: string
+		lineageTag: ef635004-ba16-4cd9-8a2b-09ee0d2a0265
+		sourceColumn: Initiative
+
+	column Project
+		dataType: string
+		lineageTag: c07e9a3e-a85d-485e-a7b9-b8e57ac37198
+		sourceColumn: Project
+
+	column Tool
+		dataType: string
+		lineageTag: 8bd26ce2-2cb4-4dc1-ad11-029fc01820f0
+		sourceColumn: Tool
+
+	partition 'Business Context Options' = entity
+		mode: directLake
+		source
+			entityName: demo_business_context_options_75b4187f7d3f
+			schemaName: demo
+			expressionSource: 'DirectLake - ZavaFinOpsDemo'
+

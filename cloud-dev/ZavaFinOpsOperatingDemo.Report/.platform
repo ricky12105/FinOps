@@ -1,0 +1,12 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "Report",
+    "displayName": "Zava FinOps Operating Demo",
+    "description": "Approved four-page operating demo; serving refresh and report-native actions require acceptance."
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "48dd7814-7068-483e-9466-e1947f3d4fcf"
+  }
+}

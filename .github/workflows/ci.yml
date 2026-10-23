@@ -1,0 +1,46 @@
+name: "CI — Unit Tests, SAST & PBIR Build"
+
+on:
+  push:
+    branches: ["main", "master"]
+  pull_request:
+    branches: ["main", "master"]
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    name: Python Tests, Security Scan & PBIR Report Build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Set up Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Install Python dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install pyarrow PyYAML ruff bandit
+
+      - name: Run Ruff linter
+        run: ruff check scripts business-context/function.py
+
+      - name: Run Bandit SAST security scan
+        run: bandit -c pyproject.toml -r scripts/finops_config.py scripts/finops_foundation.py scripts/register_foundation_history.py scripts/prepare_foundation_bundle.py scripts/run_foundation_fabric.py scripts/databricks_medallion.py scripts/demo_serving.py scripts/deploy_customer_dev.py scripts/manage_attribution_coverage.py business-context/function.py
+
+      - name: Run Python unit & integration tests
+        run: python -m unittest discover -s scripts -p "test_*.py" -v
+
+      - name: Run dry-run customer deployment & PBIR generation
+        run: python scripts/deploy_customer_dev.py --mode sample --dry-run

@@ -1,0 +1,135 @@
+/// One row per original billing row; signed costs retained. USD rounded half-even to four decimals. Exact source amounts retained separately.
+table Billing
+	lineageTag: 02b62fae-c250-46a8-8b2b-ce2b7da3205e
+
+	/// Net signed USD billing in current filter context; model amounts rounded per row to 4 decimals.
+	measure 'Billed USD' = SUM(Billing[Billed Cost])
+		formatString: $#,0.00;($#,0.00);$0.00
+		displayFolder: Costs
+		lineageTag: 4f5800a2-ca82-4f56-bbe3-ce6bb99edb45
+
+	/// Direct Fabric, Databricks and Purview services only; does not include unverified Databricks infrastructure.
+	measure 'Direct Platforms USD' = CALCULATE([Billed USD], KEEPFILTERS('Context'[Platform] IN {"Fabric", "Databricks", "Purview"}))
+		formatString: $#,0.00;($#,0.00);$0.00
+		displayFolder: Costs
+		lineageTag: 709082c4-83c3-4b4e-9887-cf60479996e6
+
+	measure 'Fabric USD' = CALCULATE([Billed USD], KEEPFILTERS('Context'[Platform] = "Fabric"))
+		formatString: $#,0.00;($#,0.00);$0.00
+		displayFolder: Costs
+		lineageTag: d2464c62-599d-4a78-a70b-40308ecbcbd8
+
+	measure 'Databricks USD' = CALCULATE([Billed USD], KEEPFILTERS('Context'[Platform] = "Databricks"))
+		formatString: $#,0.00;($#,0.00);$0.00
+		displayFolder: Costs
+		lineageTag: e8e44e5d-a8d7-41c7-8294-2357b9639ec8
+
+	measure 'Purview USD' = CALCULATE([Billed USD], KEEPFILTERS('Context'[Platform] = "Purview"))
+		formatString: $#,0.00;($#,0.00);$0.00
+		displayFolder: Costs
+		lineageTag: 0f593011-9282-43a6-a499-007c3e125da5
+
+	measure 'Other USD' = CALCULATE([Billed USD], KEEPFILTERS('Context'[Platform] = "Other / Unmapped"))
+		formatString: $#,0.00;($#,0.00);$0.00
+		displayFolder: Costs
+		lineageTag: ffc2b8f5-c401-4d2e-9309-c929abf6abbd
+
+	measure 'Unassigned USD' = CALCULATE([Billed USD], KEEPFILTERS('Context'[Attribution] = "Unassigned"))
+		formatString: $#,0.00;($#,0.00);$0.00
+		displayFolder: Attribution
+		lineageTag: ae4ca5a6-72f0-438f-b3be-c2df58fd4a25
+
+	measure 'Demo Mapped USD' = CALCULATE([Billed USD], KEEPFILTERS('Context'[Attribution] = "Demo mapping"))
+		formatString: $#,0.00;($#,0.00);$0.00
+		displayFolder: Attribution
+		lineageTag: a791157e-3466-43bc-9c09-fec518af820c
+
+	measure 'Billing Rows' = COUNTROWS(Billing)
+		formatString: #,0
+		displayFolder: Audit
+		lineageTag: fb34ac18-8772-44ba-ab1e-906d4d40a14e
+
+	/// All negative cost rows, including any credits and signed corrections. Not a substitute for charge-category classification.
+	measure 'Negative Charges USD' = CALCULATE([Billed USD], KEEPFILTERS(Billing[Billed Cost] < 0))
+		formatString: $#,0.00;($#,0.00);$0.00
+		displayFolder: Audit
+		lineageTag: 3c7bd01a-f50a-478c-84c7-cf23035ce5f8
+
+	measure 'Active Scope' = "BU: " & IF(ISFILTERED('Context'[Business Unit]), CONCATENATEX(VALUES('Context'[Business Unit]), 'Context'[Business Unit], ", "), "All") & " | Initiative: " & IF(ISFILTERED('Context'[Initiative]), CONCATENATEX(VALUES('Context'[Initiative]), 'Context'[Initiative], ", "), "All")
+		displayFolder: Context
+		lineageTag: 1ce9d5d8-2a61-4b2b-abc4-144c46611109
+
+	column 'Row ID'
+		dataType: int64
+		isHidden
+		lineageTag: 0efca8f7-a5de-4fe2-83c2-22e3041bbb63
+		summarizeBy: none
+		sourceColumn: RowId
+
+	column 'Context Key'
+		dataType: int64
+		isHidden
+		lineageTag: 994addaa-cdf6-49c0-87a1-bd4824a2e0d9
+		summarizeBy: none
+		sourceColumn: ContextKey
+
+	column Date
+		dataType: dateTime
+		isHidden
+		lineageTag: 2a08bc3d-b160-4129-a622-053c93c4efd8
+		sourceColumn: Date
+
+	column Period
+		dataType: string
+		isHidden
+		lineageTag: a5deab1a-1c4f-47cb-bfae-896a54802f57
+		sourceColumn: Period
+
+	column Meter
+		dataType: string
+		lineageTag: ee5e0904-59d7-440f-bdd9-67d242d5217a
+		sourceColumn: Meter
+
+	column 'Charge Category'
+		dataType: string
+		lineageTag: 1ef75787-a7b1-44c6-bb46-73a19ba81988
+		sourceColumn: ChargeCategory
+
+	column 'Charge Class'
+		dataType: string
+		lineageTag: 3614a742-50a0-44a7-b7fc-65be6fed0a3a
+		sourceColumn: ChargeClass
+
+	column 'Billed Cost'
+		dataType: decimal
+		isHidden
+		formatString: $#,0.0000;($#,0.0000);$0.0000
+		lineageTag: 9cf6c265-6ac7-4daf-940a-9ef72a57de11
+		sourceColumn: BilledCost
+
+	column 'Exact Source Cost'
+		dataType: string
+		isHidden
+		lineageTag: 186b718a-86ea-4794-9175-73d997b2d5bb
+		sourceColumn: ExactBilledCost
+
+	column 'Source Run ID'
+		dataType: string
+		isHidden
+		lineageTag: f185f3ae-c17a-4306-af29-3a6210210d0f
+		sourceColumn: SourceRunId
+
+	partition Billing = m
+		mode: import
+		source =
+				let
+				    IsCloudSource = Text.StartsWith(DataFolder, "sql://", Comparer.OrdinalIgnoreCase),
+				    Source = if IsCloudSource then
+				        let Parts = Text.Split(Text.AfterDelimiter(DataFolder, "sql://"), "|")
+				        in Sql.Database(Parts{0}, Parts{1}, [Query = "SELECT * FROM dbo.Billing"])
+				        else Csv.Document(File.Contents(DataFolder & "\billing.csv"), [Delimiter = ",", Encoding = 65001, QuoteStyle = QuoteStyle.Csv]),
+				    Headers = if IsCloudSource then Source else Table.PromoteHeaders(Source, [PromoteAllScalars = true]),
+				    Typed = Table.TransformColumnTypes(Headers, {{"RowId", Int64.Type}, {"ContextKey", Int64.Type}, {"Date", type date}, {"BilledCost", Currency.Type}}, "en-US")
+				in
+				    Typed
+

@@ -1,0 +1,86 @@
+/// FUAM active items, workspaces, and capacities inventory across the Fabric estate.
+table 'Fabric Estate Inventory'
+	lineageTag: c1d2e3f4-5678-4a9b-8c1d-2e3f4a5b6c7d
+
+	/// Count of distinct Fabric workspaces in the estate.
+	measure 'Fabric Workspaces' = DISTINCTCOUNT('Fabric Estate Inventory'[Workspace ID])
+		formatString: #,##0
+		lineageTag: c1d2e3f4-1111-4a11-8111-111111111111
+
+	/// Count of active Fabric items across all workspaces.
+	measure 'Fabric Active Items' = SUM('Fabric Estate Inventory'[Item Count])
+		formatString: #,##0
+		lineageTag: c1d2e3f4-2222-4a22-8222-222222222222
+
+	/// Count of distinct Fabric capacities backing active items.
+	measure 'Fabric Capacities' = DISTINCTCOUNT('Fabric Estate Inventory'[Capacity ID])
+		formatString: #,##0
+		lineageTag: c1d2e3f4-3333-4a33-8333-333333333333
+
+	/// Count of distinct Fabric item types in use.
+	measure 'Fabric Item Types' = DISTINCTCOUNT('Fabric Estate Inventory'[Item Type])
+		formatString: #,##0
+		lineageTag: c1d2e3f4-4444-4a44-8444-444444444444
+
+	column 'Item ID'
+		dataType: string
+		lineageTag: d1e2f3a4-1111-4b11-8111-111111111111
+		sourceColumn: ItemId
+
+	column 'Item Name'
+		dataType: string
+		lineageTag: d1e2f3a4-2222-4b22-8222-222222222222
+		sourceColumn: ItemName
+
+	column 'Item Type'
+		dataType: string
+		lineageTag: d1e2f3a4-3333-4b33-8333-333333333333
+		sourceColumn: ItemType
+
+	column 'Workload Domain'
+		dataType: string
+		lineageTag: d1e2f3a4-4444-4b44-8444-444444444444
+		sourceColumn: WorkloadDomain
+
+	column State
+		dataType: string
+		lineageTag: d1e2f3a4-5555-4b55-8555-555555555555
+		sourceColumn: State
+
+	column 'Workspace ID'
+		dataType: string
+		lineageTag: d1e2f3a4-6666-4b66-8666-666666666666
+		sourceColumn: WorkspaceId
+
+	column 'Workspace Name'
+		dataType: string
+		lineageTag: d1e2f3a4-7777-4b77-8777-777777777777
+		sourceColumn: WorkspaceName
+
+	column 'Capacity ID'
+		dataType: string
+		lineageTag: d1e2f3a4-8888-4b88-8888-888888888888
+		sourceColumn: CapacityId
+
+	column 'Capacity Name'
+		dataType: string
+		lineageTag: d1e2f3a4-9999-4b99-8999-999999999999
+		sourceColumn: CapacityName
+
+	column 'Capacity SKU'
+		dataType: string
+		lineageTag: d1e2f3a4-0000-4b00-8000-000000000000
+		sourceColumn: CapacitySku
+
+	column 'Item Count'
+		dataType: int64
+		isHidden
+		lineageTag: d1e2f3a4-aaaa-4baa-8aaa-aaaaaaaaaaaa
+		sourceColumn: ItemCount
+
+	partition 'Fabric Estate Inventory' = entity
+		mode: directLake
+		source
+			entityName: demo_fabric_estate_inventory_75b4187f7d3f
+			schemaName: demo
+			expressionSource: 'DirectLake - ZavaFinOpsDemo'

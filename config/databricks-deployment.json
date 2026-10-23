@@ -1,0 +1,36 @@
+{
+  "customerId": "zava-demo",
+  "sourceWorkspaceId": "0000000000000000",
+  "fabricWorkspaceId": "00000000-0000-0000-0000-000000000003",
+  "lakehouseId": "00000000-0000-0000-0000-000000000005",
+  "lakehouseName": "ZavaFinOpsFoundation",
+  "notebookId": "00000000-0000-0000-0000-000000000019",
+  "notebookName": "ZavaDatabricksMedallion",
+  "firstJobId": "00000000-0000-0000-0000-000000000020",
+  "batchId": "05caf1e8f08f5e2a9ccdfc2c6099c7c6eeb63147a41b05b2f4bce127b0600756",
+  "bundleSha256": "38f8ddfae1fdba6f6120bad1f15b4364a19ec943a8fc8e303668a571d0435cc4",
+  "adapterSha256": "416a53ceb6e7d103a2f6cbdaf64c793363382c3b8cb26cf3339ca6f5a8b24a9d",
+  "startDate": "2026-05-01",
+  "endDateExclusive": "2026-07-01",
+  "expectedCounts": {
+    "usage": 57,
+    "queries": 4526,
+    "warehouses": 11
+  },
+  "expectedExactNetDBUs": "504.861172821342592568",
+  "status": "Completed; cloud receipt verified",
+  "validatedAtUtc": "2026-10-20T17:47:35.522096Z",
+  "tables": {
+    "bronzeUsage": "bronze.dbx_usage_05caf1e8f08f5e2a",
+    "bronzeQueries": "bronze.dbx_queries_05caf1e8f08f5e2a",
+    "bronzeWarehouses": "bronze.dbx_warehouses_05caf1e8f08f5e2a",
+    "silverUsage": "silver.dbx_usage_05caf1e8f08f5e2a",
+    "silverQueries": "silver.dbx_queries_05caf1e8f08f5e2a",
+    "silverWarehouses": "silver.dbx_warehouses_05caf1e8f08f5e2a",
+    "goldUsageDaily": "gold.dbx_usage_daily_05caf1e8f08f5e2a",
+    "goldQueriesDaily": "gold.dbx_queries_daily_05caf1e8f08f5e2a"
+  },
+  "controlTable": "control.dbx_ingestion_05caf1e8f08f5e2a",
+  "publishedToLiveModel": false,
+  "scheduling": "Manual only"
+}

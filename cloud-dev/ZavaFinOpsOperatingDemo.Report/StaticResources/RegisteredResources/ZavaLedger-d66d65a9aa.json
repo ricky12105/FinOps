@@ -1,0 +1,241 @@
+{
+  "$schema": "https://raw.githubusercontent.com/microsoft/powerbi-desktop-samples/main/Report%20Theme%20JSON%20Schema/reportThemeSchema-2.153.json",
+  "dataColors": [
+    "#00786B",
+    "#B94A32",
+    "#006DAA",
+    "#606060"
+  ],
+  "foreground": "#242424",
+  "background": "#FFFFFF",
+  "tableAccent": "#00786B",
+  "good": "#00786B",
+  "neutral": "#936B00",
+  "bad": "#B42318",
+  "textClasses": {
+    "callout": {
+      "fontSize": 28,
+      "fontFace": "Segoe UI Semibold",
+      "color": "#242424"
+    },
+    "title": {
+      "fontSize": 14,
+      "fontFace": "Segoe UI Semibold",
+      "color": "#242424"
+    },
+    "header": {
+      "fontSize": 12,
+      "fontFace": "Segoe UI Semibold",
+      "color": "#242424"
+    },
+    "label": {
+      "fontSize": 11,
+      "fontFace": "Segoe UI",
+      "color": "#444444"
+    }
+  },
+  "visualStyles": {
+    "*": {
+      "*": {
+        "border": [
+          {
+            "show": false
+          }
+        ],
+        "dropShadow": [
+          {
+            "show": false
+          }
+        ],
+        "padding": [
+          {
+            "top": 8,
+            "bottom": 8,
+            "left": 8,
+            "right": 8
+          }
+        ],
+        "visualHeader": [
+          {
+            "show": true
+          }
+        ]
+      }
+    },
+    "textbox": {
+      "*": {
+        "padding": [
+          {
+            "top": 0,
+            "bottom": 0,
+            "left": 0,
+            "right": 0
+          }
+        ],
+        "border": [
+          {
+            "show": false
+          }
+        ],
+        "background": [
+          {
+            "show": false
+          }
+        ]
+      }
+    },
+    "cardVisual": {
+      "*": {
+        "title": [
+          {
+            "show": false
+          }
+        ],
+        "padding": [
+          {
+            "paddingUniform": 0,
+            "$id": "default"
+          }
+        ],
+        "value": [
+          {
+            "bold": true,
+            "$id": "default"
+          }
+        ],
+        "label": [
+          {
+            "show": true,
+            "$id": "default"
+          }
+        ],
+        "cardCalloutArea": [
+          {
+            "paddingUniform": 0
+          }
+        ],
+        "spacing": [
+          {
+            "verticalSpacing": 0,
+            "$id": "default"
+          }
+        ]
+      }
+    },
+    "slicer": {
+      "*": {
+        "header": [
+          {
+            "textSize": 12,
+            "fontColor": {
+              "solid": {
+                "color": "#242424"
+              }
+            }
+          }
+        ],
+        "items": [
+          {
+            "textSize": 12,
+            "padding": 4
+          }
+        ]
+      }
+    },
+    "tableEx": {
+      "*": {
+        "columnHeaders": [
+          {
+            "autoSizeColumnWidth": true,
+            "columnAdjustment": "growToFit",
+            "fontColor": {
+              "solid": {
+                "color": "#242424"
+              }
+            },
+            "backColor": {
+              "solid": {
+                "color": "#EDF2F1"
+              }
+            },
+            "bold": true,
+            "fontSize": 12
+          }
+        ],
+        "values": [
+          {
+            "fontSize": 12,
+            "backColorPrimary": {
+              "solid": {
+                "color": "#FFFFFF"
+              }
+            },
+            "backColorSecondary": {
+              "solid": {
+                "color": "#F4F6F5"
+              }
+            },
+            "fontColorPrimary": {
+              "solid": {
+                "color": "#242424"
+              }
+            },
+            "fontColorSecondary": {
+              "solid": {
+                "color": "#242424"
+              }
+            }
+          }
+        ]
+      }
+    },
+    "pivotTable": {
+      "*": {
+        "columnHeaders": [
+          {
+            "autoSizeColumnWidth": true,
+            "columnAdjustment": "growToFit",
+            "fontColor": {
+              "solid": {
+                "color": "#242424"
+              }
+            },
+            "backColor": {
+              "solid": {
+                "color": "#EDF2F1"
+              }
+            },
+            "bold": true,
+            "fontSize": 12
+          }
+        ],
+        "values": [
+          {
+            "fontSize": 12,
+            "backColorPrimary": {
+              "solid": {
+                "color": "#FFFFFF"
+              }
+            },
+            "backColorSecondary": {
+              "solid": {
+                "color": "#F4F6F5"
+              }
+            },
+            "fontColorPrimary": {
+              "solid": {
+                "color": "#242424"
+              }
+            },
+            "fontColorSecondary": {
+              "solid": {
+                "color": "#242424"
+              }
+            }
+          }
+        ]
+      }
+    }
+  },
+  "name": "ZavaLedger-d66d65a9aa.json"
+}

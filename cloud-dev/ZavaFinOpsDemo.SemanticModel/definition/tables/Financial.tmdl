@@ -1,0 +1,102 @@
+/// One row per retained Azure charge. Signed billed USD rounded half-even to four decimal places; exact source text retained. Business context is effective-dated and separately labeled.
+table Financial
+	lineageTag: ea7e4ffa-31d8-4615-8da5-a9e858488c6e
+
+	/// Signed billed USD at explicit four-decimal line presentation precision; see reconciliation bridge.
+	measure 'Billed USD' = SUM('Financial'[Cost Value])
+		formatString: $#,##0.00;($#,##0.00)
+		lineageTag: 37e9ecc5-d5b0-46a8-8ed2-09b4253275de
+
+	/// Latest selected month compared with preceding closed month in the same business scope; missing prior data stays blank.
+	measure 'Month Change USD' = VAR _last = MAX('Financial'[Date]) VAR _start = DATE(YEAR(_last), MONTH(_last), 1) VAR _priorStart = EDATE(_start,-1) VAR _current = CALCULATE([Billed USD], REMOVEFILTERS('Calendar'), 'Calendar'[Date] >= _start, 'Calendar'[Date] <= EOMONTH(_start,0)) VAR _prior = CALCULATE([Billed USD], REMOVEFILTERS('Calendar'), 'Calendar'[Date] >= _priorStart, 'Calendar'[Date] < _start) RETURN IF(NOT ISBLANK(_last) && NOT ISBLANK(_prior),_current-_prior)
+		formatString: $#,##0.00;($#,##0.00)
+		lineageTag: 82c37742-ec2c-413e-b577-dcf4ad3d71b0
+
+	/// Net billed cost lacking a source or controlled business context. Does not hide negative charges.
+	measure 'Unassigned USD' = CALCULATE([Billed USD], KEEPFILTERS('BusinessContext'[Attribution Basis] = "Unassigned"))
+		formatString: $#,##0.00;($#,##0.00)
+		lineageTag: 4143ab87-3196-4c08-b5b7-e6c0dc4930f1
+
+	/// Net unassigned billed USD divided by selected net billed USD; net credits can affect this ratio.
+	measure 'Unassigned Share' = DIVIDE([Unassigned USD],[Billed USD])
+		formatString: 0.0%
+		lineageTag: 827db0ee-d13a-4e81-86d5-b90db7b4fa5a
+
+	/// Signed negative line amounts; no removal of credits.
+	measure 'Negative Charges USD' = CALCULATE([Billed USD], KEEPFILTERS('Financial'[Cost Value] < 0))
+		formatString: $#,##0.00;($#,##0.00)
+		lineageTag: 1a6ea315-938c-4aeb-a1b5-76379712069c
+
+	/// Retained source rows in the current scope.
+	measure 'Financial Rows' = COUNTROWS('Financial')
+		formatString: #,##0
+		lineageTag: 20e6ad59-5bbb-4471-9d73-e5e7af5b93e7
+
+	column Date
+		dataType: dateTime
+		formatString: yyyy-MM-dd
+		lineageTag: efe84272-9cd8-4682-a253-8033b81ec835
+		sourceColumn: Date
+
+	column Period
+		dataType: string
+		lineageTag: 177abf85-a206-4e14-8597-d1b2e1107fea
+		sourceColumn: Period
+
+	column 'Service Key'
+		dataType: int64
+		isHidden
+		lineageTag: 9a1ff6fd-60a3-4484-839c-48fee4d14ded
+		sourceColumn: ServiceKey
+
+	column 'Resource Key'
+		dataType: int64
+		isHidden
+		lineageTag: 557d8a66-5d22-4cb2-860a-e5e8a1c3da98
+		sourceColumn: ResourceKey
+
+	column 'Context Key'
+		dataType: int64
+		isHidden
+		lineageTag: b2d04e78-34b7-46ae-ab16-4d00ba03175f
+		sourceColumn: ContextKey
+
+	column 'Source Key'
+		dataType: int64
+		isHidden
+		lineageTag: cf2b6d08-62b2-4fab-bbaa-1c7ef3e1cd25
+		sourceColumn: SourceKey
+
+	column 'Cost Value'
+		dataType: decimal
+		isHidden
+		lineageTag: dd8e30a1-1794-4ae8-8013-a7851aacf1d2
+		sourceColumn: CostValue
+
+	column 'Exact Cost'
+		dataType: string
+		lineageTag: b2434874-d1e7-452a-9ea6-cd3fbff4f9bf
+		sourceColumn: ExactCost
+
+	column 'Charge Category'
+		dataType: string
+		lineageTag: d7a2b34c-82a1-4b5c-9a01-1234567890ab
+		sourceColumn: ChargeCategory
+
+	column 'Source Row ID'
+		dataType: string
+		lineageTag: e8b3c45d-93b2-4c6d-8b12-2345678901bc
+		sourceColumn: SourceRowId
+
+	column 'Financial Status'
+		dataType: string
+		lineageTag: 8f126fe2-1415-48e3-8d62-206306cb509d
+		sourceColumn: FinancialStatus
+
+	partition Financial = entity
+		mode: directLake
+		source
+			entityName: demo_financial_75b4187f7d3f
+			schemaName: demo
+			expressionSource: 'DirectLake - ZavaFinOpsDemo'
+

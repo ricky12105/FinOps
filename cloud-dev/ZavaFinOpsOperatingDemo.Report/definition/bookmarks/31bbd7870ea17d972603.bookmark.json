@@ -1,0 +1,112 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/bookmark/1.1.0/schema.json",
+  "name": "31bbd7870ea17d972603",
+  "displayName": "Native Azure tags",
+  "options": {
+    "applyOnlyToTargetVisuals": true,
+    "targetVisualNames": [
+      "8bef368dff2932a5f04f",
+      "1a60d23e4eb35b066e3e",
+      "56174321198bb1d49266",
+      "f7ab92bd90a9275ba2db",
+      "97a5e3d3575fa6db3905",
+      "2dcc2ee5cc6fc3f25c49",
+      "72da49ef0c251b9d808f",
+      "78bc22d7ecde0552236c",
+      "8bfc96ddcbe136bf2f8c",
+      "6df43f77c5040aae1db3",
+      "9dab36e1db26b2f25eea",
+      "839e115a130d57a426d4"
+    ],
+    "suppressData": true,
+    "suppressActiveSection": true
+  },
+  "explorationState": {
+    "version": "1.3",
+    "activeSection": "586a7c1c81ad4eda4ce2",
+    "sections": {
+      "586a7c1c81ad4eda4ce2": {
+        "visualContainers": {
+          "8bef368dff2932a5f04f": {
+            "singleVisual": {
+              "visualType": "tableEx"
+            }
+          },
+          "1a60d23e4eb35b066e3e": {
+            "singleVisual": {
+              "visualType": "textSlicer"
+            }
+          },
+          "56174321198bb1d49266": {
+            "singleVisual": {
+              "visualType": "textSlicer"
+            }
+          },
+          "f7ab92bd90a9275ba2db": {
+            "singleVisual": {
+              "visualType": "slicer"
+            }
+          },
+          "97a5e3d3575fa6db3905": {
+            "singleVisual": {
+              "visualType": "FlowVisual_C29F1DCC_81F5_4973_94AD_0517D44CC06A"
+            }
+          },
+          "2dcc2ee5cc6fc3f25c49": {
+            "singleVisual": {
+              "visualType": "tableEx"
+            }
+          },
+          "72da49ef0c251b9d808f": {
+            "singleVisual": {
+              "visualType": "tableEx",
+              "display": {
+                "mode": "hidden"
+              }
+            }
+          },
+          "78bc22d7ecde0552236c": {
+            "singleVisual": {
+              "visualType": "slicer",
+              "display": {
+                "mode": "hidden"
+              }
+            }
+          },
+          "8bfc96ddcbe136bf2f8c": {
+            "singleVisual": {
+              "visualType": "textSlicer",
+              "display": {
+                "mode": "hidden"
+              }
+            }
+          },
+          "6df43f77c5040aae1db3": {
+            "singleVisual": {
+              "visualType": "textSlicer",
+              "display": {
+                "mode": "hidden"
+              }
+            }
+          },
+          "9dab36e1db26b2f25eea": {
+            "singleVisual": {
+              "visualType": "actionButton",
+              "display": {
+                "mode": "hidden"
+              }
+            }
+          },
+          "839e115a130d57a426d4": {
+            "singleVisual": {
+              "visualType": "tableEx",
+              "display": {
+                "mode": "hidden"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

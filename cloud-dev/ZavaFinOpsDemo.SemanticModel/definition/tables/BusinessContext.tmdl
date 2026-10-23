@@ -1,0 +1,43 @@
+/// Effective-dated recorded context and fictional Zava mappings are labeled separately; not historical source tags.
+table BusinessContext
+	lineageTag: b68f8e62-d047-4918-8e20-d29c831cfe7b
+
+	column Key
+		dataType: int64
+		isHidden
+		isKey
+		lineageTag: 391e3eb8-ade8-4124-ae6d-afccacdcb720
+		sourceColumn: Key
+
+	column 'Business Unit'
+		dataType: string
+		lineageTag: 87c58773-4b40-41da-87b4-4589984d3311
+		sourceColumn: BusinessUnit
+
+	column Initiative
+		dataType: string
+		lineageTag: 4c8649b3-bd0e-471e-880a-8adcf9723c1b
+		sourceColumn: Initiative
+
+	column Project
+		dataType: string
+		lineageTag: 9cea4b5a-5cad-4655-b276-d1ffb644aa99
+		sourceColumn: Project
+
+	column Tool
+		dataType: string
+		lineageTag: 6d70fa2b-630d-4b94-b38c-969946848f02
+		sourceColumn: Tool
+
+	column 'Attribution Basis'
+		dataType: string
+		lineageTag: 20d87b89-aedb-469d-82da-14a4efaf18a2
+		sourceColumn: AttributionBasis
+
+	partition BusinessContext = entity
+		mode: directLake
+		source
+			entityName: demo_businesscontext_75b4187f7d3f
+			schemaName: demo
+			expressionSource: 'DirectLake - ZavaFinOpsDemo'
+

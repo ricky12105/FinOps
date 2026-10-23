@@ -1,0 +1,73 @@
+/// Daily observed statement outcomes per warehouse, independent of usage fact. Missing query metrics remain unknown; no per-query dollar cost.
+table 'Databricks Queries'
+	lineageTag: 8cd35c13-85de-4c65-98ee-31f79b6fd0f5
+
+	/// Observed statements in retained May-June windows, not a complete current-workspace history.
+	measure Queries = SUM('Databricks Queries'[Statement Count])
+		formatString: #,##0
+		lineageTag: 6f457d4e-b1c8-406c-b466-17406aa371d5
+
+	/// Source FAILED statement count; not equivalent to avoidable cost.
+	measure 'Failed Queries' = SUM('Databricks Queries'[Failed Count])
+		formatString: #,##0
+		lineageTag: f2ffc3e3-762c-4a63-b821-d3ccec288063
+
+	/// Failed source statements divided by observed statements.
+	measure 'Query Failure Rate' = DIVIDE([Failed Queries],[Queries])
+		formatString: 0.0%
+		lineageTag: 1d5ef554-c43f-47dd-9fc4-36aab4b1634e
+
+	column Date
+		dataType: dateTime
+		lineageTag: d3aba2f1-9fe5-4e3c-ae06-b44adf68a0bd
+		sourceColumn: Date
+
+	column 'Entity Key'
+		dataType: int64
+		isHidden
+		lineageTag: 73ff8acf-5325-4f1d-bfac-0bb183dc08cf
+		sourceColumn: EntityKey
+
+	column 'Warehouse Key'
+		dataType: int64
+		isHidden
+		lineageTag: 8f8018d0-c07d-4206-930c-47b8a4fc9488
+		sourceColumn: WarehouseKey
+
+	column 'Source Key'
+		dataType: int64
+		isHidden
+		lineageTag: 6132277b-8e88-4ca2-a6a6-346e85f4137d
+		sourceColumn: SourceKey
+
+	column 'Statement Count'
+		dataType: int64
+		isHidden
+		lineageTag: 2e4b05a0-4b8a-42ac-9c3a-954e5ee3f94f
+		sourceColumn: StatementCount
+
+	column 'Failed Count'
+		dataType: int64
+		isHidden
+		lineageTag: 5ba8c432-4905-4788-bbea-43b4decdc59e
+		sourceColumn: FailedCount
+
+	column 'Execution Milliseconds'
+		dataType: int64
+		isHidden
+		lineageTag: eafbcc58-6b85-4cc6-8563-62351550c983
+		sourceColumn: ExecutionMilliseconds
+
+	column 'Read Bytes'
+		dataType: int64
+		isHidden
+		lineageTag: d68e39f2-4c34-475e-971b-07a5ab767baa
+		sourceColumn: ReadBytes
+
+	partition 'Databricks Queries' = entity
+		mode: directLake
+		source
+			entityName: demo_databricks_queries_75b4187f7d3f
+			schemaName: demo
+			expressionSource: 'DirectLake - ZavaFinOpsDemo'
+

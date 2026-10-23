@@ -1,0 +1,28 @@
+/// Distinct normalized billed resource IDs, including unallocated resource.
+table Resource
+	lineageTag: 7cf7ba8a-9d82-4a29-b70e-7258ee86a97d
+
+	column Key
+		dataType: int64
+		isHidden
+		isKey
+		lineageTag: fa5e297e-1360-4c37-bcc2-b968ad782c3e
+		sourceColumn: Key
+
+	column 'Resource ID'
+		dataType: string
+		lineageTag: bdfff423-d0e4-4d88-bdd6-6b152c9534ea
+		sourceColumn: ResourceId
+
+	column Resource
+		dataType: string
+		lineageTag: 48f2af61-52a7-44ff-8fa7-043108e300aa
+		sourceColumn: Resource
+
+	partition Resource = entity
+		mode: directLake
+		source
+			entityName: demo_resource_75b4187f7d3f
+			schemaName: demo
+			expressionSource: 'DirectLake - ZavaFinOpsDemo'
+

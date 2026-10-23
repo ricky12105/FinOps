@@ -1,0 +1,12 @@
+relationship Billing_Context
+	fromColumn: Billing.'Context Key'
+	toColumn: Context.'Context Key'
+
+relationship Billing_Calendar
+	fromColumn: Billing.Date
+	toColumn: Calendar.Date
+
+relationship Billing_Snapshot
+	fromColumn: Billing.Period
+	toColumn: Snapshot.Period
+

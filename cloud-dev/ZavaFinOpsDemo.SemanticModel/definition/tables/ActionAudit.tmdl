@@ -1,0 +1,41 @@
+/// Snapshot of evidenced native manual probes and recorded internal assignments. Caller versus execution identity retained; not proof of report invocation.
+table ActionAudit
+	lineageTag: ea999ceb-a80d-4738-846c-a098195f4b01
+
+	column 'Requested At'
+		dataType: string
+		lineageTag: 65faf82f-0f63-4fa1-a804-fdbb7f5f6452
+		sourceColumn: RequestedAt
+
+	column Action
+		dataType: string
+		lineageTag: 2f27baa5-e177-4855-890a-1aa131f3cbea
+		sourceColumn: Action
+
+	column 'Requested By'
+		dataType: string
+		lineageTag: 3fe7aa9f-830c-470e-8967-29444601253b
+		sourceColumn: RequestedBy
+
+	column 'Executed As'
+		dataType: string
+		lineageTag: 2750dd54-2476-45cd-a2ec-477f048e1f37
+		sourceColumn: ExecutedAs
+
+	column Status
+		dataType: string
+		lineageTag: 75b4cfa2-4521-4cf4-9b82-79035666f1e5
+		sourceColumn: Status
+
+	column 'Request ID'
+		dataType: string
+		lineageTag: 707cb809-da3d-4ecf-948e-97e0581c03e7
+		sourceColumn: RequestId
+
+	partition ActionAudit = entity
+		mode: directLake
+		source
+			entityName: demo_actionaudit_75b4187f7d3f
+			schemaName: demo
+			expressionSource: 'DirectLake - ZavaFinOpsDemo'
+

@@ -1,0 +1,63 @@
+/// Observed platform, entity, outcome and historical window selector. Must select one platform; DBUs and FUAM CUs are not additive.
+table 'Operational View'
+	lineageTag: 0ac66284-52cb-4736-a130-cb6bb9cd7b42
+
+	/// Requires one source platform. Never adds DBUs and reported CUs.
+	measure 'Observed Usage' = SWITCH(SELECTEDVALUE('Operational View'[Platform]),"Databricks",[DBUs],"Fabric",[Observed CUs],BLANK())
+		formatString: #,##0.00
+		lineageTag: 40323844-391c-47d8-8176-a56a662300b1
+
+	/// Platform-specific observed statement or operation denominator; no cross-platform mixed total.
+	measure Operations = SWITCH(SELECTEDVALUE('Operational View'[Platform]),"Databricks",[Queries],"Fabric",[Fabric Operation Count],BLANK())
+		formatString: #,##0
+		lineageTag: 01612981-d300-4abf-a6b8-2c14ed7da698
+
+	/// Within-platform outcome denominator only; not dollar loss.
+	measure 'Failure Rate' = SWITCH(SELECTEDVALUE('Operational View'[Platform]),"Databricks",[Query Failure Rate],"Fabric",DIVIDE([Failed Fabric Operations],[Fabric Operation Count]),BLANK())
+		formatString: 0.0%
+		lineageTag: 20424a7f-4206-404a-8a94-1a81bda1b080
+
+	/// Warehouse/notebook-linked DBUs divided by observed DBUs; Fabric attribution percentage is not asserted.
+	measure 'Attributed Usage Share' = IF(SELECTEDVALUE('Operational View'[Platform])="Databricks",DIVIDE(CALCULATE([DBUs],KEEPFILTERS('Databricks Usage'[Attributed]=TRUE())),[DBUs]))
+		formatString: 0.0%
+		lineageTag: 2af7d700-cb8f-4067-8f07-bec382261841
+
+	/// Dynamic operational source/unit/window evidence.
+	measure 'Evidence Label' = SWITCH(SELECTEDVALUE('Operational View'[Platform]),"Databricks","Databricks | DBUs and statements | May-Jun 2026 | no query/job dollars","Fabric","FUAM | reported CUs and operations | Aug 17-28 2026 | not billed allocation","Select one platform | financial and operational windows differ")
+		formatString: @
+		lineageTag: 29117b1a-6851-4900-aee6-27d8bd0d19e5
+
+	column Key
+		dataType: int64
+		isHidden
+		isKey
+		lineageTag: 43a63482-4653-4389-92b0-0647a1099428
+		sourceColumn: Key
+
+	column Platform
+		dataType: string
+		lineageTag: 2bc80e1b-d5df-43f7-92fd-6bf01837c425
+		sourceColumn: Platform
+
+	column Entity
+		dataType: string
+		lineageTag: 11d474ee-1efa-479a-9def-ad16a9226c59
+		sourceColumn: Entity
+
+	column Outcome
+		dataType: string
+		lineageTag: 6c525ff0-3a39-452f-91fc-4e19fcdddcb6
+		sourceColumn: Outcome
+
+	column Window
+		dataType: string
+		lineageTag: 570914d8-7da2-4d21-ba4a-6fb354750600
+		sourceColumn: Window
+
+	partition 'Operational View' = entity
+		mode: directLake
+		source
+			entityName: demo_operational_view_75b4187f7d3f
+			schemaName: demo
+			expressionSource: 'DirectLake - ZavaFinOpsDemo'
+

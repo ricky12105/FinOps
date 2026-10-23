@@ -1,0 +1,14 @@
+{
+  "name": "zava-finops-report-builder",
+  "version": "1.0.0",
+  "private": true,
+  "description": "PBIR report generator and validator for the Zava FinOps Operating Demo on Microsoft Fabric",
+  "type": "module",
+  "scripts": {
+    "build:report": "node scripts/build_operating_demo.mjs --overwrite",
+    "build:brief": "node artifacts/build-customer-brief.mjs"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  }
+}

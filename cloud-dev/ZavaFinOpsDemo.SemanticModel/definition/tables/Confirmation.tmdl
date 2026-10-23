@@ -1,0 +1,21 @@
+/// Disconnected explicit confirmation input, not an authorization substitute.
+table Confirmation
+	lineageTag: 26b9a8b0-57d8-41c7-9591-754e0177c295
+
+	column Confirmation
+		dataType: string
+		lineageTag: 8dfe6c2d-5f01-4e19-90a4-d89c83b7e082
+		sourceColumn: Confirmation
+
+	column Confirmed
+		dataType: boolean
+		lineageTag: d8f7985c-2904-4a87-bda4-4681634efc82
+		sourceColumn: Confirmed
+
+	partition Confirmation = entity
+		mode: directLake
+		source
+			entityName: demo_confirmation_75b4187f7d3f
+			schemaName: demo
+			expressionSource: 'DirectLake - ZavaFinOpsDemo'
+

@@ -1,0 +1,4 @@
+/// Direct Lake on OneLake; versioned demo serving tables in the existing foundation lakehouse. No SQL DirectQuery fallback or live-model edits.
+expression 'DirectLake - ZavaFinOpsDemo' = let Source = AzureStorage.DataLake("https://onelake.dfs.fabric.microsoft.com/00000000-0000-0000-0000-000000000003/00000000-0000-0000-0000-000000000005", [HierarchicalNavigation=true]) in Source
+	lineageTag: 70945f10-28ba-4a37-be2e-3f1f7ee8d091
+

@@ -1,0 +1,31 @@
+{
+  "mode": "governed",
+  "validFrom": "2025-10-01",
+  "validToExclusive": "2026-10-01",
+  "mappedResourceCount": 770,
+  "totalDistinctResources": 854,
+  "totalBilledUSD": "16919.92",
+  "attributedUSD": "16343.76",
+  "unassignedUSD": "576.16",
+  "attributedSharePct": 96.59,
+  "unassignedSharePct": 3.41,
+  "spendByBusinessUnit": {
+    "Customer Operations": "$6,050.28 (35.8%)",
+    "Finance": "$4,857.48 (28.7%)",
+    "Data Platform": "$4,430.70 (26.2%)",
+    "Risk & Actuarial": "$606.70 (3.6%)",
+    "Unassigned": "$576.16 (3.4%)",
+    "Cloud Infrastructure & Security": "$393.72 (2.3%)",
+    "AI & Digital Innovation": "$4.87 (0.0%)"
+  },
+  "resourcesByBusinessUnit": {
+    "Finance": 261,
+    "Risk & Actuarial": 179,
+    "Customer Operations": 141,
+    "Data Platform": 107,
+    "Unassigned": 84,
+    "AI & Digital Innovation": 77,
+    "Cloud Infrastructure & Security": 5
+  },
+  "tmdlTablesRebound": 30
+}

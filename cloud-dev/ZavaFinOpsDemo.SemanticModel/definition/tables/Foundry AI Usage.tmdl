@@ -1,0 +1,118 @@
+/// Microsoft Foundry (Azure AI) daily usage and cost ledger across Foundry Models and Foundry Tools (Jul 1 - Sep 30, 2026).
+table 'Foundry AI Usage'
+	lineageTag: c3d4e5f6-1111-4a11-8111-111111111111
+
+	/// Total billed USD across Microsoft Foundry Models and Foundry Tools.
+	measure 'Foundry Cost USD' = SUM('Foundry AI Usage'[Cost Value])
+		formatString: $#,##0.00;($#,##0.00)
+		lineageTag: c3d4e5f6-2222-4a22-8222-222222222222
+
+	/// Distinct Microsoft Foundry accounts and projects with recorded AI activity.
+	measure 'Foundry Accounts' = DISTINCTCOUNT('Foundry AI Usage'[Foundry Account])
+		formatString: #,##0
+		lineageTag: c3d4e5f6-3333-4a33-8333-333333333333
+
+	/// Distinct AI model token, multimodal, evaluation, and hosted agent compute meters.
+	measure 'Foundry AI Meters' = DISTINCTCOUNT('Foundry AI Usage'[Meter])
+		formatString: #,##0
+		lineageTag: c3d4e5f6-4444-4a44-8444-444444444444
+
+	/// Distinct Azure resource groups hosting Microsoft Foundry workloads.
+	measure 'Foundry Resource Groups' = DISTINCTCOUNT('Foundry AI Usage'[Resource Group])
+		formatString: #,##0
+		lineageTag: c3d4e5f6-5555-4a55-8555-555555555555
+
+	/// Count of daily Foundry meter usage records.
+	measure 'Foundry Daily Meter Rows' = SUM('Foundry AI Usage'[Record Count])
+		formatString: #,##0
+		lineageTag: c3d4e5f6-6666-4a66-8666-666666666666
+
+	/// Spend on Foundry Models (GPT-5.4, GPT-5, GPT-4.1, GPT-4o, Sora 2, Image 2, Embeddings).
+	measure 'Foundry Models USD' = CALCULATE([Foundry Cost USD], KEEPFILTERS('Foundry AI Usage'[Service Name] = "Foundry Models"))
+		formatString: $#,##0.00;($#,##0.00)
+		lineageTag: c3d4e5f6-7777-4a77-8777-777777777777
+
+	/// Spend on Foundry Tools (Hosted Agent vCPU/Memory, SRE Agent, Evaluations, Content Understanding).
+	measure 'Foundry Tools USD' = CALCULATE([Foundry Cost USD], KEEPFILTERS('Foundry AI Usage'[Service Name] = "Foundry Tools"))
+		formatString: $#,##0.00;($#,##0.00)
+		lineageTag: c3d4e5f6-8888-4a88-8888-888888888888
+
+	column Date
+		dataType: dateTime
+		formatString: yyyy-MM-dd
+		lineageTag: c3d4e5f6-9999-4b99-8999-999999999999
+		sourceColumn: UsageDate
+
+	column 'Date Label'
+		dataType: string
+		lineageTag: c3d4e5f6-aaaa-4baa-8aaa-aaaaaaaaaaaa
+		sourceColumn: DateLabel
+
+	column 'Month Label'
+		dataType: string
+		lineageTag: c3d4e5f6-bbbb-4bbb-8bbb-bbbbbbbbbbbb
+		sourceColumn: MonthLabel
+
+	column 'Foundry Account'
+		dataType: string
+		lineageTag: c3d4e5f6-cccc-4bcc-8ccc-cccccccccccc
+		sourceColumn: FoundryAccount
+
+	column 'Resource ID'
+		dataType: string
+		lineageTag: c3d4e5f6-dddd-4bdd-8ddd-dddddddddddd
+		sourceColumn: ResourceId
+
+	column 'Resource Group'
+		dataType: string
+		lineageTag: c3d4e5f6-eeee-4bee-8eee-eeeeeeeeeeee
+		sourceColumn: ResourceGroup
+
+	column Region
+		dataType: string
+		lineageTag: c3d4e5f6-ffff-4bff-8fff-ffffffffffff
+		sourceColumn: Region
+
+	column 'Service Name'
+		dataType: string
+		lineageTag: c3d4e5f6-0000-4b00-8000-000000000000
+		sourceColumn: ServiceName
+
+	column Meter
+		dataType: string
+		lineageTag: c3d4e5f6-1212-4b12-8121-121212121212
+		sourceColumn: Meter
+
+	column 'Model Family'
+		dataType: string
+		lineageTag: c3d4e5f6-1313-4b13-8131-131313131313
+		sourceColumn: ModelFamily
+
+	column 'Usage Modality'
+		dataType: string
+		lineageTag: c3d4e5f6-1414-4b14-8141-141414141414
+		sourceColumn: UsageModality
+
+	column 'Workload Use Case'
+		dataType: string
+		lineageTag: c3d4e5f6-1515-4b15-8151-151515151515
+		sourceColumn: WorkloadUseCase
+
+	column 'Cost Value'
+		dataType: decimal
+		isHidden
+		lineageTag: c3d4e5f6-1616-4b16-8161-161616161616
+		sourceColumn: CostUSD
+
+	column 'Record Count'
+		dataType: int64
+		isHidden
+		lineageTag: c3d4e5f6-1717-4b17-8171-171717171717
+		sourceColumn: RecordCount
+
+	partition 'Foundry AI Usage' = entity
+		mode: directLake
+		source
+			entityName: demo_foundry_ai_usage_75b4187f7d3f
+			schemaName: demo
+			expressionSource: 'DirectLake - ZavaFinOpsDemo'

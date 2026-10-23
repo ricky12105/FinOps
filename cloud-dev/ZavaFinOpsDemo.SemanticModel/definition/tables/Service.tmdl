@@ -1,0 +1,23 @@
+/// Distinct financial source service labels; unknown services retained.
+table Service
+	lineageTag: 98af012f-8900-4e96-9a34-0d4fa6dc5603
+
+	column Key
+		dataType: int64
+		isHidden
+		isKey
+		lineageTag: 74a5e220-ec05-4839-af33-ebdac9dbe6a3
+		sourceColumn: Key
+
+	column Service
+		dataType: string
+		lineageTag: a12f9739-259c-48b1-aa31-093d46c6fc4b
+		sourceColumn: Service
+
+	partition Service = entity
+		mode: directLake
+		source
+			entityName: demo_service_75b4187f7d3f
+			schemaName: demo
+			expressionSource: 'DirectLake - ZavaFinOpsDemo'
+

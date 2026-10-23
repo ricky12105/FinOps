@@ -1,0 +1,22 @@
+/// Disconnected illustrative sensitivity assumptions, not approved budgets or realized savings.
+table Scenario
+	lineageTag: 11f7383b-559e-451d-9345-4b22bb5c5e39
+
+	column Scenario
+		dataType: string
+		lineageTag: b6b22099-25d0-4d58-83d1-561277630b94
+		sourceColumn: Scenario
+
+	column Factor
+		dataType: decimal
+		isHidden
+		lineageTag: 4a9fd7c6-7745-4e03-9ab2-3b7a49e0cc99
+		sourceColumn: Factor
+
+	partition Scenario = entity
+		mode: directLake
+		source
+			entityName: demo_scenario_75b4187f7d3f
+			schemaName: demo
+			expressionSource: 'DirectLake - ZavaFinOpsDemo'
+

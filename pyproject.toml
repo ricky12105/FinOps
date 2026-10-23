@@ -1,0 +1,49 @@
+[build-system]
+requires = ["setuptools>=68.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "zava-finops"
+version = "1.0.0"
+description = "Customer-owned FinOps, Multi-Platform Observability (Azure, Databricks, Fabric FUAM, Foundry AI), and Governed Action on Microsoft Fabric"
+readme = "README.md"
+requires-python = ">=3.11"
+license = { text = "MIT" }
+dependencies = [
+    "pyarrow>=15.0.0",
+    "PyYAML>=6.0.1",
+]
+
+[project.optional-dependencies]
+sql = [
+    "mssql-python>=0.1.0",
+]
+artifacts = [
+    "python-pptx>=0.6.23",
+    "python-docx>=1.1.0",
+    "openpyxl>=3.1.2",
+]
+dev = [
+    "ruff>=0.4.0",
+    "mypy>=1.10.0",
+    "bandit>=1.7.8",
+    "types-PyYAML>=6.0.12",
+]
+
+[tool.ruff]
+line-length = 140
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "B", "S"]
+ignore = ["E501", "S101", "S603"]
+
+[tool.mypy]
+python_version = "3.11"
+ignore_missing_imports = true
+warn_unused_ignores = true
+check_untyped_defs = true
+
+[tool.bandit]
+exclude_dirs = ["scripts/test_*.py", ".venv"]
+skips = ["B101", "B404", "B603"]

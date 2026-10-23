@@ -1,0 +1,16 @@
+{
+  "customerId": "zava-demo",
+  "profile": "DEFAULT",
+  "host": "https://adb-0000000000000000.0.azuredatabricks.net",
+  "sourceWorkspaceId": "0000000000000000",
+  "warehouseId": "0000000000000000",
+  "startDate": "2026-05-01",
+  "endDateExclusive": "2026-07-01",
+  "pageSize": 500,
+  "maximumRowsPerDataset": 20000,
+  "fabricWorkspaceId": "00000000-0000-0000-0000-000000000003",
+  "lakehouseId": "00000000-0000-0000-0000-000000000005",
+  "lakehouseName": "ZavaFinOpsFoundation",
+  "mode": "Manual complete-window snapshot",
+  "financialTreatment": "Operational usage only; not additive billed cost"
+}

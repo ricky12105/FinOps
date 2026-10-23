@@ -1,0 +1,23 @@
+/// Conformed Databricks warehouse identity; unknown and nonwarehouse usage remain Unallocated.
+table Warehouse
+	lineageTag: bd931229-d745-4965-b328-165c48689838
+
+	column Key
+		dataType: int64
+		isHidden
+		isKey
+		lineageTag: d700e0f8-5c86-43ec-b7fd-31e8ded6b75f
+		sourceColumn: Key
+
+	column 'Warehouse ID'
+		dataType: string
+		lineageTag: c3ebabff-291f-4883-a621-7e0c4c3b406b
+		sourceColumn: WarehouseId
+
+	partition Warehouse = entity
+		mode: directLake
+		source
+			entityName: demo_warehouse_75b4187f7d3f
+			schemaName: demo
+			expressionSource: 'DirectLake - ZavaFinOpsDemo'
+

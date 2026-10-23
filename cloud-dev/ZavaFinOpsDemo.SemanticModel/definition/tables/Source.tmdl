@@ -1,0 +1,23 @@
+/// Distinct sources for financial and operational facts; never unioned as additional spend.
+table Source
+	lineageTag: 2ee6a1e8-54dc-41aa-8d85-675aae2b8225
+
+	column Key
+		dataType: int64
+		isHidden
+		isKey
+		lineageTag: 1f9a35f8-1152-4372-9038-7ac7f0172d6b
+		sourceColumn: Key
+
+	column Source
+		dataType: string
+		lineageTag: 7d944dd2-f766-4889-82c9-09ccdf5ec2dc
+		sourceColumn: Source
+
+	partition Source = entity
+		mode: directLake
+		source
+			entityName: demo_source_75b4187f7d3f
+			schemaName: demo
+			expressionSource: 'DirectLake - ZavaFinOpsDemo'
+

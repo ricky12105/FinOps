@@ -1,0 +1,91 @@
+{
+  "status": "Report-triggered Power Automate flow bound and verified end-to-end; live Azure tag readback confirmed",
+  "writeEnabled": true,
+  "manualAdminTestApproved": true,
+  "powerAutomateRouteApproved": true,
+  "nativeTest": {
+    "status": "Verified",
+    "verifiedAtUtc": "2026-10-20T18:17:23.4704101Z",
+    "httpStatus": 200,
+    "clientRequestId": "00000000-0000-0000-0000-000000000032",
+    "azureRequestId": "00000000-0000-0000-0000-000000000031",
+    "executionPath": "Admin Azure CLI token; not Power Automate or report invocation",
+    "tagsRemainApplied": true
+  },
+  "reportTriggeredFlow": {
+    "status": "Verified",
+    "reportId": "00000000-0000-0000-0000-000000000009",
+    "pageId": "586a7c1c81ad4eda4ce2",
+    "visualName": "97a5e3d3575fa6db3905",
+    "visualType": "FlowVisual_C29F1DCC_81F5_4973_94AD_0517D44CC06A",
+    "environmentId": "00000000-0000-0000-0000-000000000011",
+    "flowId": "00000000-0000-0000-0000-000000000012",
+    "flowResourceId": "/providers/Microsoft.Flow/environments/00000000-0000-0000-0000-000000000011/flows/00000000-0000-0000-0000-000000000012",
+    "boundFields": [
+      "NativeTagRequest.Proposal ID",
+      "NativeTagRequest.Confirmation",
+      "NativeTagRequest.Resource ID"
+    ],
+    "serverSideGates": [
+      "Confirmation == 'Confirmed'",
+      "Proposal ID == 'ZAVA-FINANCE-DEMO-1'",
+      "Target scoped to allowlisted capacity astoriafabricnorthcentralus"
+    ],
+    "executionIdentity": "finops-tag-operator@contoso.onmicrosoft.com (00000000-0000-0000-0000-000000000013)",
+    "triggeredFromReportOn": "2026-10-20",
+    "liveAzureReadbackVerified": true
+  },
+  "tenantId": "00000000-0000-0000-0000-000000000001",
+  "subscriptionId": "00000000-0000-0000-0000-000000000002",
+  "approvedResourceGroup": "RG-fabric",
+  "proposedResourceId": "/subscriptions/00000000-0000-0000-0000-000000000002/resourceGroups/RG-fabric/providers/Microsoft.Fabric/capacities/astoriafabricnorthcentralus",
+  "demoActorObjectId": "00000000-0000-0000-0000-000000000014",
+  "demoActorName": "finops-admin@contoso.onmicrosoft.com",
+  "plannedAzureExecutionIdentity": {
+    "userPrincipalName": "finops-tag-operator@contoso.onmicrosoft.com",
+    "objectId": "00000000-0000-0000-0000-000000000013",
+    "roleName": "Zava FinOps Demo Tag Operator",
+    "roleDefinitionId": "00000000-0000-0000-0000-000000000015",
+    "roleAssignmentId": "00000000-0000-0000-0000-000000000016",
+    "assignmentScope": "/subscriptions/00000000-0000-0000-0000-000000000002/resourceGroups/RG-fabric/providers/Microsoft.Fabric/capacities/astoriafabricnorthcentralus",
+    "verifiedDirectRoleActions": [
+      "Microsoft.Resources/tags/read",
+      "Microsoft.Resources/tags/write"
+    ],
+    "runtimeConnectionVerified": true,
+    "runtimeWriteVerified": true,
+    "runtimeWriteEvidence": {
+      "source": "User confirmation that the manual Power Automate PATCH Merge and following GET worked",
+      "reportedOn": "2026-10-20",
+      "intendedChange": "Merge the same six existing tag values on the allowlisted capacity",
+      "detailedRunOutputsCaptured": false,
+      "reportInvocationVerified": true
+    },
+    "runtimeReadEvidence": {
+      "source": "User-supplied Power Automate probe outputs",
+      "allowedScopeHttpStatus": 200,
+      "allowedScopeAzureRequestId": "00000000-0000-0000-0000-000000000033",
+      "allowedScopeObservedAtUtc": "2026-10-20T19:05:13Z",
+      "outOfScopeResult": "Authorization denied for Microsoft.Resources/tags/read",
+      "outOfScopeResourceId": "/subscriptions/00000000-0000-0000-0000-000000000002/resourceGroups/RG-fabric/providers/Microsoft.Databricks/workspaces/DatabricksWorkspace",
+      "deniedPrincipalObjectId": "00000000-0000-0000-0000-000000000013",
+      "reportedOn": "2026-10-20"
+    },
+    "inheritedAndGroupAccessFullyAudited": false
+  },
+  "operation": "Merge",
+  "allowTagDeletion": false,
+  "preserveUnrelatedTags": true,
+  "proposedTags": {
+    "environment": "demo",
+    "department": "Finance",
+    "project": "ERP-Upgrade",
+    "cost-center": "CC-1042",
+    "workload": "Finance-Analytics",
+    "owner": "finance-team@zava.example"
+  },
+  "businessContextBasis": "Fictional Zava demonstration values, not verified ownership",
+  "identityAcceptance": "Dedicated connection allowed read, named out-of-scope denial, manual Merge/readback, and published-report FlowVisual invocation passed",
+  "tagInheritance": "Resource-group tags do not automatically propagate to resources",
+  "costHistoryImpact": "Tag changes do not retroactively rewrite historical Azure billing exports"
+}

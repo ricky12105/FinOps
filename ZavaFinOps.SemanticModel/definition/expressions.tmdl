@@ -1,0 +1,4 @@
+/// Local prepared snapshot directory. Run scripts/prepare_billing.py first. No cloud source or write-back.
+expression DataFolder = ".data\processed" meta [IsParameterQuery=true, Type="Text", IsParameterQueryRequired=true]
+	lineageTag: d7b7e63d-7031-4c26-ae3f-bd637909b841
+

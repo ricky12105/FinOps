@@ -1,0 +1,90 @@
+/// One row per selected financial month. Source totals, displayed line totals and rounding bridge; remains period-wide under business filters.
+table Reconciliation
+	lineageTag: d854f297-e06d-40f2-8b77-2c4bda3e0870
+
+	/// Monthly exact-source sum rounded only for model presentation; authoritative exact amounts remain in retained source.
+	measure 'Source USD' = SUM('Reconciliation'[Source Value])
+		formatString: $#,##0.0000
+		lineageTag: 78d48fe2-2408-4101-a2b3-7535930edec3
+
+	/// Sum of line-rounded presentation cost across the selected financial periods, independent of business or operational filters.
+	measure 'Model USD' = SUM('Reconciliation'[Model Value])
+		formatString: $#,##0.0000
+		lineageTag: 6d690788-7510-4388-be7a-8a38242533a9
+
+	/// Presentation line sum minus rounded source monthly sum. Expected disclosed bridge, not unexplained loss.
+	measure 'Rounding USD' = SUM('Reconciliation'[Rounding Value])
+		formatString: $#,##0.0000;($#,##0.0000)
+		lineageTag: 742697da-b678-46d2-a29e-275c8fa33da2
+
+	/// Zero when the presentation difference is fully accounted for by explicit rounding.
+	measure 'Unexplained USD' = [Model USD]-[Source USD]-[Rounding USD]
+		formatString: $#,##0.0000;($#,##0.0000)
+		lineageTag: 58d1caf5-d8fc-4a0c-b6a8-39b0dfb2a468
+
+	/// Selected months whose native query reconciliation is within USD 0.0001; not invoice certification.
+	measure 'Matched Months' = CALCULATE(COUNTROWS('Reconciliation'), 'Reconciliation'[Matched] = TRUE())
+		formatString: 0
+		lineageTag: 94daa390-bfb5-4620-959a-1750eb07d560
+
+	column Date
+		dataType: dateTime
+		lineageTag: 7422a9bb-9f8a-4219-b628-d5e77532c33f
+		sourceColumn: Date
+
+	column Period
+		dataType: string
+		lineageTag: 6e080c5e-5dc6-476e-9465-8918b768f741
+		sourceColumn: Period
+
+	column 'Source Value'
+		dataType: decimal
+		isHidden
+		lineageTag: 1e4a84b9-111e-481a-bcda-686b7bc06b26
+		sourceColumn: SourceValue
+
+	column 'Model Value'
+		dataType: decimal
+		isHidden
+		lineageTag: 3c63a66e-4d2d-40dc-b307-67db5b1093ef
+		sourceColumn: ModelValue
+
+	column 'Rounding Value'
+		dataType: decimal
+		isHidden
+		lineageTag: 7f73ab58-4d95-482e-9ee2-858597285d1c
+		sourceColumn: RoundingValue
+
+	column 'Native Delta Exact'
+		dataType: string
+		lineageTag: ba67894a-f18f-4652-b0fe-565b365f95fc
+		sourceColumn: NativeDeltaExact
+
+	column Matched
+		dataType: boolean
+		lineageTag: e3eb1ca2-9886-46db-93c5-5902e6bcce20
+		sourceColumn: Matched
+
+	column 'Source Rows'
+		dataType: int64
+		isHidden
+		lineageTag: 3d6b7563-2a21-4c03-b14c-97d635e6cbfe
+		sourceColumn: SourceRows
+
+	column 'Source Run ID'
+		dataType: string
+		lineageTag: ebb3874d-eba8-4b5a-a5d6-2d98ded63de4
+		sourceColumn: SourceRunId
+
+	column 'Observed At'
+		dataType: string
+		lineageTag: b2d81b1c-4b36-49c9-8182-e8e67a1f7892
+		sourceColumn: ObservedAt
+
+	partition Reconciliation = entity
+		mode: directLake
+		source
+			entityName: demo_reconciliation_75b4187f7d3f
+			schemaName: demo
+			expressionSource: 'DirectLake - ZavaFinOpsDemo'
+

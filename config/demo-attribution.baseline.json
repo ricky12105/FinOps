@@ -1,0 +1,12 @@
+{
+  "description": "Fictional Zava ownership for demonstration only. Real costs; not verified ownership, measured allocation or approved chargeback. No resource tags are changed.",
+  "validFrom": "2026-06-01",
+  "validToExclusive": "2026-10-01",
+  "mappings": [
+    {"resourceId": "/subscriptions/00000000-0000-0000-0000-000000000002/resourcegroups/rg-fabric/providers/microsoft.fabric/capacities/astoriafabricnorthcentralus", "businessUnit": "Finance", "initiative": "Finance Modernization", "project": "Finance Analytics", "tool": "Fabric Analytics"},
+    {"resourceId": "/subscriptions/00000000-0000-0000-0000-000000000002/resourcegroups/rg-fabric/providers/microsoft.databricks/workspaces/databricksworkspace", "businessUnit": "Finance", "initiative": "Finance Modernization", "project": "Finance Analytics", "tool": "Databricks Engineering"},
+    {"resourceId": "/subscriptions/00000000-0000-0000-0000-000000000002/resourcegroups/purview-rg/providers/microsoft.purview/accounts/purview-astoria", "businessUnit": "Finance", "initiative": "Finance Modernization", "project": "Finance Analytics", "tool": "Purview Governance"},
+    {"resourceId": "/subscriptions/00000000-0000-0000-0000-000000000002/resourcegroups/rg-fabric/providers/microsoft.fabric/capacities/astoriafabricdemocapacity", "businessUnit": "Customer Operations", "initiative": "Customer Intelligence", "project": "Customer Insights", "tool": "Fabric Analytics"},
+    {"resourceId": "/subscriptions/00000000-0000-0000-0000-000000000002/resourcegroups/rg-fabric/providers/microsoft.fabric/capacities/astoriafabricoaptest", "businessUnit": "Data Platform", "initiative": "Enterprise Data Foundation", "project": "Platform Enablement", "tool": "Fabric Analytics"}
+  ]
+}

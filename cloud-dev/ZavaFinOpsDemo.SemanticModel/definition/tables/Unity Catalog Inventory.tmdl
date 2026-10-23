@@ -1,0 +1,82 @@
+/// Live Unity Catalog inventory from system.information_schema.tables and volumes on demoDWH.
+table 'Unity Catalog Inventory'
+	lineageTag: f1a2b3c4-d5e6-4f7a-8b9c-0d1e2f3a4b5c
+
+	/// Count of distinct Unity Catalog schemas in the workspace.
+	measure 'UC Schemas' = DISTINCTCOUNT('Unity Catalog Inventory'[Schema])
+		formatString: #,##0
+		lineageTag: a1b2c3d4-1111-4a11-8111-111111111111
+
+	/// Count of Unity Catalog tables and views in the workspace.
+	measure 'UC Tables' = CALCULATE(SUM('Unity Catalog Inventory'[Asset Count]), KEEPFILTERS('Unity Catalog Inventory'[Asset Category] = "Table"))
+		formatString: #,##0
+		lineageTag: a1b2c3d4-2222-4a22-8222-222222222222
+
+	/// Count of distinct Unity Catalog catalogs in the workspace.
+	measure 'UC Catalogs' = DISTINCTCOUNT('Unity Catalog Inventory'[Catalog])
+		formatString: #,##0
+		lineageTag: a1b2c3d4-3333-4a33-8333-333333333333
+
+	/// Count of Unity Catalog volumes in the workspace.
+	measure 'UC Volumes' = COALESCE(CALCULATE(SUM('Unity Catalog Inventory'[Asset Count]), KEEPFILTERS('Unity Catalog Inventory'[Asset Category] = "Volume")), 0)
+		formatString: #,##0
+		lineageTag: a1b2c3d4-4444-4a44-8444-444444444444
+
+	/// Total Unity Catalog assets (tables, views, and volumes).
+	measure 'UC Assets' = SUM('Unity Catalog Inventory'[Asset Count])
+		formatString: #,##0
+		lineageTag: a1b2c3d4-5555-4a55-8555-555555555555
+
+	column Date
+		dataType: dateTime
+		formatString: yyyy-MM-dd
+		lineageTag: b1b2c3d4-1111-4b11-8111-111111111111
+		sourceColumn: Date
+
+	column 'Month Created'
+		dataType: string
+		lineageTag: b1b2c3d4-2222-4b22-8222-222222222222
+		sourceColumn: MonthCreated
+
+	column Catalog
+		dataType: string
+		lineageTag: b1b2c3d4-3333-4b33-8333-333333333333
+		sourceColumn: Catalog
+
+	column Schema
+		dataType: string
+		lineageTag: b1b2c3d4-4444-4b44-8444-444444444444
+		sourceColumn: Schema
+
+	column 'Asset Name'
+		dataType: string
+		lineageTag: b1b2c3d4-5555-4b55-8555-555555555555
+		sourceColumn: AssetName
+
+	column 'Asset Category'
+		dataType: string
+		lineageTag: b1b2c3d4-6666-4b66-8666-666666666666
+		sourceColumn: AssetCategory
+
+	column 'Asset Type'
+		dataType: string
+		lineageTag: b1b2c3d4-7777-4b77-8777-777777777777
+		sourceColumn: AssetType
+
+	column 'Asset Format'
+		dataType: string
+		lineageTag: b1b2c3d4-8888-4b88-8888-888888888888
+		sourceColumn: AssetFormat
+
+	column 'Asset Count'
+		dataType: int64
+		isHidden
+		lineageTag: b1b2c3d4-9999-4b99-8999-999999999999
+		sourceColumn: AssetCount
+
+	partition 'Unity Catalog Inventory' = entity
+		mode: directLake
+		source
+			entityName: demo_unity_catalog_inventory_75b4187f7d3f
+			schemaName: demo
+			expressionSource: 'DirectLake - ZavaFinOpsDemo'

@@ -1,0 +1,30 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/page/2.1.0/schema.json",
+  "name": "586a7c1c81ad4eda4ce2",
+  "displayName": "Governance & Action",
+  "displayOption": "FitToPage",
+  "width": 1920,
+  "height": 1080,
+  "visualInteractions": [
+    {
+      "source": "8bfc96ddcbe136bf2f8c",
+      "target": "78bc22d7ecde0552236c",
+      "type": "NoFilter"
+    },
+    {
+      "source": "6df43f77c5040aae1db3",
+      "target": "78bc22d7ecde0552236c",
+      "type": "NoFilter"
+    },
+    {
+      "source": "8bfc96ddcbe136bf2f8c",
+      "target": "6df43f77c5040aae1db3",
+      "type": "NoFilter"
+    },
+    {
+      "source": "6df43f77c5040aae1db3",
+      "target": "8bfc96ddcbe136bf2f8c",
+      "type": "NoFilter"
+    }
+  ]
+}

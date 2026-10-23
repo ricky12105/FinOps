@@ -1,0 +1,15 @@
+model ZavaFinOps
+	culture: en-US
+	defaultPowerBIDataSourceVersion: powerBI_V3
+	sourceQueryCulture: en-US
+	dataAccessOptions
+		legacyRedirects
+		returnErrorValuesAsNull
+
+annotation PBI_ProTooling = ["MCP-PBIModeling","DevMode"]
+
+ref table Billing
+ref table Context
+ref table Calendar
+ref table Snapshot
+

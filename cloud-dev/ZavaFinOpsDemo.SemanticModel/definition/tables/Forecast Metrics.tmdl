@@ -1,0 +1,33 @@
+/// Disconnected three-holdout aggregate error evidence; not a probabilistic guarantee.
+table 'Forecast Metrics'
+	lineageTag: 9e7343f9-449b-4592-857f-8dad6ee8f373
+
+	/// Three retrospective July-September holdouts, not vintage-correct. Sample too small for probabilistic confidence.
+	measure 'Forecast MAE USD' = MAX('Forecast Metrics'[MAE Value])
+		formatString: $#,##0.00
+		lineageTag: 2175a9e6-8b94-43e2-b5f8-c4548f573aca
+
+	/// Same three holdouts for last-month naive baseline.
+	measure 'Naive MAE USD' = MAX('Forecast Metrics'[Naive MAE Value])
+		formatString: $#,##0.00
+		lineageTag: 481e523e-2931-4c8e-930e-0f4ae01721c3
+
+	column 'MAE Value'
+		dataType: decimal
+		isHidden
+		lineageTag: 27f7a103-dbfe-43a3-a3bb-4a4b0c8385e2
+		sourceColumn: MeanAbsoluteError
+
+	column 'Naive MAE Value'
+		dataType: decimal
+		isHidden
+		lineageTag: 3d46b88f-0ffe-4c8f-bd7b-ca94ae846a53
+		sourceColumn: NaiveMeanAbsoluteError
+
+	partition 'Forecast Metrics' = entity
+		mode: directLake
+		source
+			entityName: demo_forecast_metrics_75b4187f7d3f
+			schemaName: demo
+			expressionSource: 'DirectLake - ZavaFinOpsDemo'
+

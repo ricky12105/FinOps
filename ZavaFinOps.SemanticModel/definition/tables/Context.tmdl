@@ -1,0 +1,81 @@
+/// Resource/service and effective business context. Demo mapping is fictional resource ownership, not measured allocation or approved chargeback.
+table Context
+	lineageTag: 4fdd6077-f699-4bbc-94fd-f935d9223540
+
+	column 'Context Key'
+		dataType: int64
+		isHidden
+		lineageTag: 65dc458b-81ad-48a3-8fdb-8d4e3781eb1a
+		summarizeBy: none
+		sourceColumn: ContextKey
+
+	column Resource
+		dataType: string
+		lineageTag: fc2aac47-cb1b-405f-b005-c4ecc0d6b8dd
+		sourceColumn: Resource
+
+	column 'Resource ID'
+		dataType: string
+		isHidden
+		lineageTag: 90cc5907-45b4-41f2-8844-1b0cc8b6b1bd
+		sourceColumn: ResourceId
+
+	column 'Resource Group'
+		dataType: string
+		lineageTag: 54f39130-609b-4ffd-8cc2-399f5f0458a7
+		sourceColumn: ResourceGroup
+
+	column Service
+		dataType: string
+		lineageTag: 4d10d5a5-4220-413c-a158-0ec122ab64d6
+		sourceColumn: Service
+
+	column Platform
+		dataType: string
+		lineageTag: 50517c1c-4a4a-4339-9eaf-8d3a50958bac
+		sourceColumn: Platform
+
+	column 'Business Unit'
+		dataType: string
+		lineageTag: ee9f0145-a356-4967-a6f0-71478e23b1c6
+		sourceColumn: BusinessUnit
+
+	column Initiative
+		dataType: string
+		lineageTag: 76879561-ef1a-43dd-93c3-05c35c2d62b2
+		sourceColumn: Initiative
+
+	column Project
+		dataType: string
+		lineageTag: ba55aeb8-29ce-4084-a4aa-503c7382c8f5
+		sourceColumn: Project
+
+	column Tool
+		dataType: string
+		lineageTag: 8009226d-dfa0-4973-bbc0-ec1f6c43e496
+		sourceColumn: Tool
+
+	column Attribution
+		dataType: string
+		lineageTag: e57595e3-1c76-46a7-85bb-214e78d767da
+		sourceColumn: Attribution
+
+	column 'Cost Scope'
+		dataType: string
+		lineageTag: 9fbea286-c4ba-4ec2-ad19-89811bbdd647
+		sourceColumn: CostScope
+
+	partition Context = m
+		mode: import
+		source =
+				let
+				    IsCloudSource = Text.StartsWith(DataFolder, "sql://", Comparer.OrdinalIgnoreCase),
+				    Source = if IsCloudSource then
+				        let Parts = Text.Split(Text.AfterDelimiter(DataFolder, "sql://"), "|")
+				        in Sql.Database(Parts{0}, Parts{1}, [Query = "SELECT * FROM dbo.Context"])
+				        else Csv.Document(File.Contents(DataFolder & "\context.csv"), [Delimiter = ",", Encoding = 65001, QuoteStyle = QuoteStyle.Csv]),
+				    Headers = if IsCloudSource then Source else Table.PromoteHeaders(Source, [PromoteAllScalars = true]),
+				    Typed = Table.TransformColumnTypes(Headers, {{"ContextKey", Int64.Type}}, "en-US")
+				in
+				    Typed
+

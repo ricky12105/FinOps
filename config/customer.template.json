@@ -1,0 +1,60 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "description": "Customer Dev Environment Configuration Template for Zava FinOps on Microsoft Fabric. Copy to config/customer.local.json (git-ignored) and populate with your target environment IDs.",
+  "customerId": "zava-demo",
+  "tenantId": "00000000-0000-0000-0000-000000000001",
+  "tenantDomain": "contoso.onmicrosoft.com",
+  "subscriptionId": "00000000-0000-0000-0000-000000000002",
+  "currency": "USD",
+  "fabric": {
+    "workspaceId": "00000000-0000-0000-0000-000000000003",
+    "workspaceName": "FinOps",
+    "capacityId": "00000000-0000-0000-0000-000000000004",
+    "capacitySku": "F4",
+    "lakehouseId": "00000000-0000-0000-0000-000000000005",
+    "lakehouseName": "ZavaFinOpsFoundation",
+    "sqlEndpointId": "00000000-0000-0000-0000-000000000006",
+    "servingNotebookId": "00000000-0000-0000-0000-000000000007",
+    "servingNotebookName": "ZavaFinOpsDemoServing",
+    "semanticModelId": "00000000-0000-0000-0000-000000000008",
+    "semanticModelName": "ZavaFinOpsDemo",
+    "reportId": "00000000-0000-0000-0000-000000000009",
+    "reportName": "Zava FinOps Operating Demo",
+    "dataAgentId": "00000000-0000-0000-0000-000000000010",
+    "dataAgentName": "ZavaFinOps_Agent"
+  },
+  "sqlEndpoints": {
+    "fuamServer": "your-fuam-endpoint.datawarehouse.fabric.microsoft.com",
+    "fuamDatabase": "FUAM_Lakehouse",
+    "businessContextServer": "your-sql-endpoint.database.fabric.microsoft.com",
+    "businessContextDatabase": "ZavaFinOpsBusinessContext"
+  },
+  "databricks": {
+    "host": "https://adb-0000000000000000.0.azuredatabricks.net",
+    "sourceWorkspaceId": "0000000000000000",
+    "warehouseId": "0000000000000000",
+    "profile": "DEFAULT",
+    "startDate": "2026-05-01",
+    "endDateExclusive": "2026-07-01"
+  },
+  "governance": {
+    "powerAutomateEnvironmentId": "00000000-0000-0000-0000-000000000011",
+    "powerAutomateFlowId": "00000000-0000-0000-0000-000000000012",
+    "environmentLocation": "unitedstates",
+    "environmentRegion": "westus",
+    "approvedResourceGroup": "RG-fabric",
+    "approvedCapacityName": "zavafabriccapacity",
+    "tagOperatorUpn": "finops-tag-operator@contoso.onmicrosoft.com",
+    "tagOperatorObjectId": "00000000-0000-0000-0000-000000000013",
+    "demoAdminUpn": "finops-admin@contoso.onmicrosoft.com",
+    "demoAdminObjectId": "00000000-0000-0000-0000-000000000014",
+    "allowedTagKeys": [
+      "environment",
+      "department",
+      "project",
+      "cost-center",
+      "workload",
+      "owner"
+    ]
+  }
+}

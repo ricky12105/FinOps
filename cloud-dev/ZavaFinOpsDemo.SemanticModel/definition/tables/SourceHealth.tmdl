@@ -1,0 +1,36 @@
+/// Disconnected evidence ledger. Observation timestamps do not imply current streaming coverage.
+table SourceHealth
+	lineageTag: bf7ea762-e346-459f-af87-d96dc066dc9f
+
+	/// Financial coverage and precision evidence; not a streaming claim.
+	measure 'Financial Evidence Label' = "12 closed months | Oct 2025-Sep 2026 | exact-source bridge retained | manual snapshot"
+		formatString: @
+		lineageTag: d9493761-276e-4876-9ed2-85927730da56
+
+	column Source
+		dataType: string
+		lineageTag: b8fe5dfe-c6a1-46f4-84a1-65423b6eedd9
+		sourceColumn: Source
+
+	column Coverage
+		dataType: string
+		lineageTag: 7f01a2ec-2708-4d10-8664-dc95caee1dbd
+		sourceColumn: Coverage
+
+	column 'Observed At'
+		dataType: string
+		lineageTag: ed825b6c-e7d7-4b55-a5dd-2d4c92e4930c
+		sourceColumn: ObservedAt
+
+	column Status
+		dataType: string
+		lineageTag: 82c2e99c-0f01-4de6-87e8-cb9a3e5bf055
+		sourceColumn: Status
+
+	partition SourceHealth = entity
+		mode: directLake
+		source
+			entityName: demo_sourcehealth_75b4187f7d3f
+			schemaName: demo
+			expressionSource: 'DirectLake - ZavaFinOpsDemo'
+

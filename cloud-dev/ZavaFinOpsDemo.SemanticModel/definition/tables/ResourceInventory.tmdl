@@ -1,0 +1,42 @@
+/// Exact allowlisted native-tag target. Last manual-probe observations require current preview before any write.
+table ResourceInventory
+	lineageTag: 16f148e4-7685-4c9c-9689-f67e67cdf06b
+
+	/// Last-probe limitation and current-preview requirement.
+	measure 'Observation Label' = SELECTEDVALUE('ResourceInventory'[Observation Evidence],"All 854 billed resources | user-editable tag key & value enabled")
+		formatString: @
+		lineageTag: 324491e5-b2f8-4f8b-80e3-36a3a7b53e64
+
+	column 'Resource ID'
+		dataType: string
+		isKey
+		lineageTag: d3e3e05e-fc93-4ed0-8a67-ea823da23074
+		sourceColumn: ResourceId
+
+	column Resource
+		dataType: string
+		lineageTag: 9966ab20-cfc2-47f8-abcd-e439e684b90e
+		sourceColumn: Resource
+
+	column 'Classification Status'
+		dataType: string
+		lineageTag: 1ce8a963-de1e-47d3-accc-17d16b74f768
+		sourceColumn: ClassificationStatus
+
+	column 'Eligible Action'
+		dataType: string
+		lineageTag: 2256267f-05b7-4355-abba-442530057a6a
+		sourceColumn: EligibleAction
+
+	column 'Observation Evidence'
+		dataType: string
+		lineageTag: cf072d18-2fb8-499d-bc28-6515236d875e
+		sourceColumn: ObservationLabel
+
+	partition ResourceInventory = entity
+		mode: directLake
+		source
+			entityName: demo_resourceinventory_75b4187f7d3f
+			schemaName: demo
+			expressionSource: 'DirectLake - ZavaFinOpsDemo'
+

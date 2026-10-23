@@ -1,0 +1,92 @@
+/// Unified ledger of Azure Cost Management anomaly alerts, budget alerts, FinOps optimization insights, and 49 live Azure Advisor recommendations.
+table 'Anomalies & Insights'
+	lineageTag: f2a3b4c5-1111-4a11-8111-111111111111
+
+	/// Total count of active anomaly alerts, budget alerts, and Advisor recommendations.
+	measure 'Active Insights & Alerts' = SUM('Anomalies & Insights'[Insight Count])
+		formatString: #,##0
+		lineageTag: f2a3b4c5-2222-4a22-8222-222222222222
+
+	/// Count of High-severity anomalies, budget breaches, and Advisor recommendations.
+	measure 'High Severity Insights' = CALCULATE(SUM('Anomalies & Insights'[Insight Count]), KEEPFILTERS('Anomalies & Insights'[Severity] = "High"))
+		formatString: #,##0
+		lineageTag: f2a3b4c5-3333-4a33-8333-333333333333
+
+	/// Count of live Azure Advisor recommendations across Security and High Availability.
+	measure 'Advisor Recommendations' = CALCULATE(SUM('Anomalies & Insights'[Insight Count]), KEEPFILTERS('Anomalies & Insights'[Source System] = "Microsoft.Advisor/recommendations"))
+		formatString: #,##0
+		lineageTag: f2a3b4c5-4444-4a44-8444-444444444444
+
+	/// Quantified monthly financial variance or optimization opportunity across cost alerts and insights.
+	measure 'Quantified Impact USD' = SUM('Anomalies & Insights'[Financial Impact Value])
+		formatString: $#,##0.00
+		lineageTag: f2a3b4c5-5555-4a55-8555-555555555555
+
+	column 'Insight ID'
+		dataType: string
+		lineageTag: f2a3b4c5-6666-4b66-8666-666666666666
+		sourceColumn: InsightId
+
+	column 'Detected Date'
+		dataType: string
+		lineageTag: f2a3b4c5-7777-4b77-8777-777777777777
+		sourceColumn: DetectedDate
+
+	column 'Source System'
+		dataType: string
+		lineageTag: f2a3b4c5-8888-4b88-8888-888888888888
+		sourceColumn: SourceSystem
+
+	column Category
+		dataType: string
+		lineageTag: f2a3b4c5-9999-4b99-8999-999999999999
+		sourceColumn: Category
+
+	column Severity
+		dataType: string
+		lineageTag: f2a3b4c5-aaaa-4baa-8aaa-aaaaaaaaaaaa
+		sourceColumn: Severity
+
+	column 'Target Scope'
+		dataType: string
+		lineageTag: f2a3b4c5-bbbb-4bbb-8bbb-bbbbbbbbbbbb
+		sourceColumn: TargetScope
+
+	column 'Resource Group'
+		dataType: string
+		lineageTag: f2a3b4c5-cccc-4bcc-8ccc-cccccccccccc
+		sourceColumn: ResourceGroup
+
+	column 'Metric Or Change'
+		dataType: string
+		lineageTag: f2a3b4c5-dddd-4bdd-8ddd-dddddddddddd
+		sourceColumn: MetricOrChange
+
+	column 'Financial Impact Value'
+		dataType: decimal
+		isHidden
+		lineageTag: f2a3b4c5-eeee-4bee-8eee-eeeeeeeeeeee
+		sourceColumn: FinancialImpactUSD
+
+	column Title
+		dataType: string
+		lineageTag: f2a3b4c5-ffff-4bff-8fff-ffffffffffff
+		sourceColumn: Title
+
+	column Recommendation
+		dataType: string
+		lineageTag: f2a3b4c5-0000-4b00-8000-000000000000
+		sourceColumn: Recommendation
+
+	column 'Insight Count'
+		dataType: int64
+		isHidden
+		lineageTag: f2a3b4c5-1212-4b12-8121-121212121212
+		sourceColumn: InsightCount
+
+	partition 'Anomalies & Insights' = entity
+		mode: directLake
+		source
+			entityName: demo_anomalies_and_insights_75b4187f7d3f
+			schemaName: demo
+			expressionSource: 'DirectLake - ZavaFinOpsDemo'

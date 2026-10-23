@@ -1,0 +1,72 @@
+/// Daily DBU usage by source SKU, product and observed attribution. Not additional Azure billed cost; no job/run allocation.
+table 'Databricks Usage'
+	lineageTag: a8b7a31c-7438-4759-bbf2-08efedefab0e
+
+	/// Reported Databricks units, displayed to four decimal places; exact source usage retained separately. Not USD.
+	measure DBUs = SUM('Databricks Usage'[Usage Value])
+		formatString: #,##0.0000
+		lineageTag: c132bfdf-0d73-46e1-a7ba-487f052b1379
+
+	column Date
+		dataType: dateTime
+		lineageTag: e26fcb74-bd7d-4014-b061-efe7335ad50b
+		sourceColumn: Date
+
+	column 'Entity Key'
+		dataType: int64
+		isHidden
+		lineageTag: b74760bf-5af7-4ff3-843d-1fa79c94fbb6
+		sourceColumn: EntityKey
+
+	column 'Warehouse Key'
+		dataType: int64
+		isHidden
+		lineageTag: 6f81ba1d-3e21-41c2-ab47-a624e02764b4
+		sourceColumn: WarehouseKey
+
+	column 'Source Key'
+		dataType: int64
+		isHidden
+		lineageTag: cb41c45a-8165-437d-adc3-fd0bcf0a838f
+		sourceColumn: SourceKey
+
+	column 'Usage Value'
+		dataType: decimal
+		isHidden
+		lineageTag: 3eac9520-3501-457b-af5e-39cfbd694c5b
+		sourceColumn: UsageValue
+
+	column 'Exact Usage'
+		dataType: string
+		isHidden
+		lineageTag: 08001d73-ebfa-4ce6-9a9d-74c5c27982f9
+		sourceColumn: ExactUsage
+
+	column Records
+		dataType: int64
+		isHidden
+		lineageTag: 65dc149c-9a8e-45e8-9bdb-64f8f24028ad
+		sourceColumn: Records
+
+	column Attributed
+		dataType: boolean
+		lineageTag: a9e76a22-cb10-4583-afaa-b35175ee7371
+		sourceColumn: Attributed
+
+	column Product
+		dataType: string
+		lineageTag: de7082c7-00fc-4b40-891a-55ca7cceabc8
+		sourceColumn: Product
+
+	column SKU
+		dataType: string
+		lineageTag: 0416b71a-4448-4bad-9581-ec3a118386af
+		sourceColumn: SKU
+
+	partition 'Databricks Usage' = entity
+		mode: directLake
+		source
+			entityName: demo_databricks_usage_75b4187f7d3f
+			schemaName: demo
+			expressionSource: 'DirectLake - ZavaFinOpsDemo'
+

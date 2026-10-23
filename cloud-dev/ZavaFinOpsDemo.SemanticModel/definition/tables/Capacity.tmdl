@@ -1,0 +1,23 @@
+/// Distinct capacity IDs observed in the bounded FUAM slice; not capacity purchase prices.
+table Capacity
+	lineageTag: 18f57df3-d7b9-4f60-a752-51b1daacac26
+
+	column Key
+		dataType: int64
+		isHidden
+		isKey
+		lineageTag: 23e6e62d-f2cc-4979-9319-f9a89518c16a
+		sourceColumn: Key
+
+	column 'Capacity ID'
+		dataType: string
+		lineageTag: 90bbd15e-33eb-4044-be7f-fd99453b5859
+		sourceColumn: CapacityId
+
+	partition Capacity = entity
+		mode: directLake
+		source
+			entityName: demo_capacity_75b4187f7d3f
+			schemaName: demo
+			expressionSource: 'DirectLake - ZavaFinOpsDemo'
+

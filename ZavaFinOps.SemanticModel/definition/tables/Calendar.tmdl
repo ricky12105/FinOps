@@ -1,0 +1,38 @@
+/// Daily date dimension spanning the four snapshot months.
+table Calendar
+	lineageTag: a4ee860b-9017-4724-bf68-3a2fb04cd03c
+	dataCategory: Time
+
+	column Date
+		dataType: dateTime
+		isUnique
+		isKey
+		formatString: dd MMM yyyy
+		lineageTag: 61c05d37-33d1-4caf-938f-315379b585c2
+		sourceColumn: Date
+
+	column Month
+		dataType: string
+		lineageTag: 730d4c63-a94a-48a5-a20c-3a7b1dc1bc79
+		sourceColumn: Month
+
+	column 'Month Name'
+		dataType: string
+		lineageTag: e661f68b-c1db-44c1-b043-3b6bcedeac79
+		sourceColumn: MonthName
+		sortByColumn: Month
+
+	partition Calendar = m
+		mode: import
+		source =
+				let
+				    IsCloudSource = Text.StartsWith(DataFolder, "sql://", Comparer.OrdinalIgnoreCase),
+				    Source = if IsCloudSource then
+				        let Parts = Text.Split(Text.AfterDelimiter(DataFolder, "sql://"), "|")
+				        in Sql.Database(Parts{0}, Parts{1}, [Query = "SELECT * FROM dbo.DemoCalendar"])
+				        else Csv.Document(File.Contents(DataFolder & "\date.csv"), [Delimiter = ",", Encoding = 65001, QuoteStyle = QuoteStyle.Csv]),
+				    Headers = if IsCloudSource then Source else Table.PromoteHeaders(Source, [PromoteAllScalars = true]),
+				    Typed = Table.TransformColumnTypes(Headers, {{"Date", type date}}, "en-US")
+				in
+				    Typed
+

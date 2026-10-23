@@ -1,0 +1,94 @@
+/// Three modeled months Oct-Dec 2026 using last three closed months. Illustrative error range; not calibrated confidence, budget or savings.
+table Forecast
+	lineageTag: c9e635d2-bf75-4dee-a9de-ad02ec9864a7
+
+	/// Trailing-three-month modeled baseline for October-December 2026; not actuals or budget.
+	measure 'Forecast USD' = SUM('Forecast'[Baseline Value])
+		formatString: $#,##0.00
+		lineageTag: b707e398-9923-4a9a-9f0c-2fcdd172d585
+
+	/// Illustrative baseline or +/-10% sensitivity; no approved savings or realized business case.
+	measure 'Scenario USD' = [Forecast USD]*SELECTEDVALUE('Scenario'[Factor],1)
+		formatString: $#,##0.00
+		lineageTag: 4c6e811a-1d61-4235-8bb1-34615341fcb2
+
+	/// Baseline minus twice three-period retrospective MAE, floored at zero. Not a calibrated confidence interval.
+	measure 'Lower Illustrative USD' = SUM('Forecast'[Lower Value])
+		formatString: $#,##0.00
+		lineageTag: 398d3f01-65c1-485e-89e0-6294b99e32b6
+
+	/// Baseline plus twice three-period retrospective MAE. Not a calibrated confidence interval.
+	measure 'Upper Illustrative USD' = SUM('Forecast'[Upper Value])
+		formatString: $#,##0.00
+		lineageTag: 1fc8ec36-9c33-466e-b3d0-716a098728cc
+
+	/// Illustrative sensitivity difference from baseline, not realized savings or approved budget.
+	measure 'Scenario Change USD' = [Scenario USD]-[Forecast USD]
+		formatString: $#,##0.00;($#,##0.00)
+		lineageTag: 988474eb-28c1-4fd7-97f8-6221585ac66e
+
+	column Date
+		dataType: dateTime
+		lineageTag: 1e34319c-376b-463a-88e8-aafeb63f3c2a
+		sourceColumn: Date
+
+	column Month
+		dataType: string
+		lineageTag: 760c957a-2ff2-476c-991e-ada2c733454a
+		sourceColumn: Month
+
+	column 'Baseline Value'
+		dataType: decimal
+		isHidden
+		lineageTag: a83d2769-ec05-4806-854d-b166ef7d2aaf
+		sourceColumn: Baseline
+
+	column 'Lower Value'
+		dataType: decimal
+		isHidden
+		lineageTag: 8876707c-6c92-420f-9cbf-c507095bf6eb
+		sourceColumn: LowerIllustrative
+
+	column 'Upper Value'
+		dataType: decimal
+		isHidden
+		lineageTag: f9773371-0652-4d56-b7b9-8c9829f56630
+		sourceColumn: UpperIllustrative
+
+	column Method
+		dataType: string
+		lineageTag: c6bd967f-135c-47a1-842c-fc6aec051d4a
+		sourceColumn: Method
+
+	column 'Training Window'
+		dataType: string
+		lineageTag: 234c1c0a-c11f-453c-8f58-8b81d8fa2cf9
+		sourceColumn: TrainingWindow
+
+	column Horizon
+		dataType: string
+		lineageTag: 055eed2a-4e81-45f9-95a1-e4c582dfa7ac
+		sourceColumn: Horizon
+
+	column 'Range Basis'
+		dataType: string
+		lineageTag: bf609739-cf3e-4539-9d5e-fd53dd6e56b2
+		sourceColumn: RangeBasis
+
+	column Limitations
+		dataType: string
+		lineageTag: 34a8d929-ff35-4cf0-90e3-2895783820de
+		sourceColumn: Limitations
+
+	column 'As Of Label'
+		dataType: string
+		lineageTag: 418b279f-3872-46f6-a8d8-334e881a49a2
+		sourceColumn: AsOfLabel
+
+	partition Forecast = entity
+		mode: directLake
+		source
+			entityName: demo_forecast_75b4187f7d3f
+			schemaName: demo
+			expressionSource: 'DirectLake - ZavaFinOpsDemo'
+

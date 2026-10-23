@@ -1,0 +1,95 @@
+relationship 'Financial Date'
+	fromColumn: Financial.Date
+	toColumn: Calendar.Date
+
+relationship 'Financial Service'
+	fromColumn: Financial.'Service Key'
+	toColumn: Service.Key
+
+relationship 'Financial Resource'
+	fromColumn: Financial.'Resource Key'
+	toColumn: Resource.Key
+
+relationship 'Financial Context'
+	fromColumn: Financial.'Context Key'
+	toColumn: BusinessContext.Key
+
+relationship 'Financial Source'
+	fromColumn: Financial.'Source Key'
+	toColumn: Source.Key
+
+relationship 'Reconciliation Date'
+	fromColumn: Reconciliation.Date
+	toColumn: Calendar.Date
+
+relationship 'Usage Date'
+	fromColumn: 'Databricks Usage'.Date
+	toColumn: Calendar.Date
+
+relationship 'Queries Date'
+	fromColumn: 'Databricks Queries'.Date
+	toColumn: Calendar.Date
+
+relationship 'Fabric Date'
+	fromColumn: 'Fabric Operations'.Date
+	toColumn: Calendar.Date
+
+relationship 'Usage Entity'
+	fromColumn: 'Databricks Usage'.'Entity Key'
+	toColumn: 'Operational View'.Key
+
+relationship 'Query Entity'
+	fromColumn: 'Databricks Queries'.'Entity Key'
+	toColumn: 'Operational View'.Key
+
+relationship 'Fabric Entity'
+	fromColumn: 'Fabric Operations'.'Entity Key'
+	toColumn: 'Operational View'.Key
+
+relationship 'Usage Warehouse'
+	fromColumn: 'Databricks Usage'.'Warehouse Key'
+	toColumn: Warehouse.Key
+
+relationship 'Queries Warehouse'
+	fromColumn: 'Databricks Queries'.'Warehouse Key'
+	toColumn: Warehouse.Key
+
+relationship 'Fabric Capacity'
+	fromColumn: 'Fabric Operations'.'Capacity Key'
+	toColumn: Capacity.Key
+
+relationship 'Usage Source'
+	fromColumn: 'Databricks Usage'.'Source Key'
+	toColumn: Source.Key
+
+relationship 'Queries Source'
+	fromColumn: 'Databricks Queries'.'Source Key'
+	toColumn: Source.Key
+
+relationship 'Fabric Source'
+	fromColumn: 'Fabric Operations'.'Source Key'
+	toColumn: Source.Key
+
+relationship 'Forecast Date'
+	fromColumn: Forecast.Date
+	toColumn: Calendar.Date
+
+relationship 'Backtest Date'
+	fromColumn: ForecastBacktest.Date
+	toColumn: Calendar.Date
+
+relationship 'Native Target'
+	fromColumn: NativeTagRequest.'Resource ID'
+	toColumn: ResourceInventory.'Resource ID'
+
+relationship 'UC Inventory Date'
+	fromColumn: 'Unity Catalog Inventory'.Date
+	toColumn: Calendar.Date
+
+relationship 'Daily RG Anomalies Date'
+	fromColumn: 'Daily RG Anomalies'.Date
+	toColumn: Calendar.Date
+
+relationship 'Foundry AI Usage Date'
+	fromColumn: 'Foundry AI Usage'.Date
+	toColumn: Calendar.Date

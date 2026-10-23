@@ -1,0 +1,56 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/page/2.1.0/schema.json",
+  "name": "c620f9dabf0bd13c45ed",
+  "displayName": "Assign Business Context",
+  "displayOption": "FitToPage",
+  "width": 1920,
+  "height": 1080,
+  "objects": {
+    "background": [
+      {
+        "properties": {
+          "color": {
+            "solid": {
+              "color": {
+                "expr": {
+                  "Literal": {
+                    "Value": "'#F4F6F5'"
+                  }
+                }
+              }
+            }
+          },
+          "transparency": {
+            "expr": {
+              "Literal": {
+                "Value": "0D"
+              }
+            }
+          }
+        }
+      }
+    ]
+  },
+  "visualInteractions": [
+    {
+      "source": "590b13a034b55ff32dae",
+      "target": "5b892afcac66e027ee03",
+      "type": "NoFilter"
+    },
+    {
+      "source": "2e7ea8ca41161c3547f1",
+      "target": "5b892afcac66e027ee03",
+      "type": "NoFilter"
+    },
+    {
+      "source": "590b13a034b55ff32dae",
+      "target": "2e7ea8ca41161c3547f1",
+      "type": "NoFilter"
+    },
+    {
+      "source": "2e7ea8ca41161c3547f1",
+      "target": "590b13a034b55ff32dae",
+      "type": "NoFilter"
+    }
+  ]
+}

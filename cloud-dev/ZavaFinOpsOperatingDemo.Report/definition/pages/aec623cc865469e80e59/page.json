@@ -1,0 +1,9 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/page/2.1.0/schema.json",
+  "name": "aec623cc865469e80e59",
+  "displayName": "Fabric & FUAM System Tables",
+  "displayOption": "FitToPage",
+  "width": 1920,
+  "height": 1080,
+  "visualInteractions": []
+}

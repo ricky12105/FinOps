@@ -1,0 +1,97 @@
+/// Daily resource group cost trend and anomaly detection from Microsoft.CostManagement/query (ms:DailyAnomalyByResourceGroup, Aug 19 - Oct 19, 2026).
+table 'Daily RG Anomalies'
+	lineageTag: e1f2a3b4-1111-4a11-8111-111111111111
+
+	/// Daily cost USD across resource groups in the anomaly evaluation window (Aug 19 - Oct 19, 2026).
+	measure 'Anomaly Window Cost USD' = SUM('Daily RG Anomalies'[Daily Cost Value])
+		formatString: $#,##0.00;($#,##0.00)
+		lineageTag: e1f2a3b4-2222-4a22-8222-222222222222
+
+	/// Expected 7-day trailing baseline cost USD per resource group.
+	measure 'Expected Baseline USD' = SUM('Daily RG Anomalies'[Expected Cost Value])
+		formatString: $#,##0.00;($#,##0.00)
+		lineageTag: e1f2a3b4-3333-4a33-8333-333333333333
+
+	/// Delta between actual daily cost and expected baseline cost.
+	measure 'Anomaly Delta USD' = SUM('Daily RG Anomalies'[Anomaly Delta Value])
+		formatString: $#,##0.00;($#,##0.00)
+		lineageTag: e1f2a3b4-4444-4a44-8444-444444444444
+
+	/// Count of detected daily resource-group anomaly spikes.
+	measure 'Detected Anomalies' = CALCULATE(SUM('Daily RG Anomalies'[Record Count]), KEEPFILTERS('Daily RG Anomalies'[Anomaly Status] = "Anomaly Detected"))
+		formatString: #,##0
+		lineageTag: e1f2a3b4-5555-4a55-8555-555555555555
+
+	/// Count of distinct resource groups evaluated by the daily anomaly rule.
+	measure 'Evaluated Resource Groups' = DISTINCTCOUNT('Daily RG Anomalies'[Resource Group])
+		formatString: #,##0
+		lineageTag: e1f2a3b4-6666-4a66-8666-666666666666
+
+	column Date
+		dataType: dateTime
+		formatString: yyyy-MM-dd
+		lineageTag: e1f2a3b4-7777-4b77-8777-777777777777
+		sourceColumn: Date
+
+	column 'Date Label'
+		dataType: string
+		lineageTag: e1f2a3b4-8888-4b88-8888-888888888888
+		sourceColumn: DateLabel
+
+	column 'Resource Group'
+		dataType: string
+		lineageTag: e1f2a3b4-9999-4b99-8999-999999999999
+		sourceColumn: ResourceGroup
+
+	column 'Daily Cost Value'
+		dataType: decimal
+		isHidden
+		lineageTag: e1f2a3b4-aaaa-4baa-8aaa-aaaaaaaaaaaa
+		sourceColumn: DailyCostUSD
+
+	column 'Expected Cost Value'
+		dataType: decimal
+		isHidden
+		lineageTag: e1f2a3b4-bbbb-4bbb-8bbb-bbbbbbbbbbbb
+		sourceColumn: ExpectedCostUSD
+
+	column 'Anomaly Delta Value'
+		dataType: decimal
+		isHidden
+		lineageTag: e1f2a3b4-cccc-4bcc-8ccc-cccccccccccc
+		sourceColumn: AnomalyDeltaUSD
+
+	column 'Cost Change Pct'
+		dataType: decimal
+		formatString: 0.00
+		lineageTag: e1f2a3b4-dddd-4bdd-8ddd-dddddddddddd
+		sourceColumn: CostChangePct
+		summarizeBy: none
+
+	column 'Anomaly Status'
+		dataType: string
+		lineageTag: e1f2a3b4-eeee-4bee-8eee-eeeeeeeeeeee
+		sourceColumn: AnomalyStatus
+
+	column 'Is Email Highlight'
+		dataType: boolean
+		lineageTag: e1f2a3b4-ffff-4bff-8fff-ffffffffffff
+		sourceColumn: IsEmailHighlight
+
+	column 'Alert Rule Name'
+		dataType: string
+		lineageTag: e1f2a3b4-0000-4b00-8000-000000000000
+		sourceColumn: AlertRuleName
+
+	column 'Record Count'
+		dataType: int64
+		isHidden
+		lineageTag: e1f2a3b4-1212-4b12-8121-121212121212
+		sourceColumn: RecordCount
+
+	partition 'Daily RG Anomalies' = entity
+		mode: directLake
+		source
+			entityName: demo_daily_rg_anomalies_75b4187f7d3f
+			schemaName: demo
+			expressionSource: 'DirectLake - ZavaFinOpsDemo'

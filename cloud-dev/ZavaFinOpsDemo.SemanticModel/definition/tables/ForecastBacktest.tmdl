@@ -1,0 +1,81 @@
+/// July-September rolling-origin retrospective period holdouts. Revised retained history means not vintage-correct replay.
+table ForecastBacktest
+	lineageTag: c4c083f6-7fee-42f1-84d8-4202024a8194
+
+	/// Actual selected July-September holdout totals from retained revised snapshots.
+	measure 'Actual USD' = SUM('ForecastBacktest'[Actual Value])
+		formatString: $#,##0.00
+		lineageTag: 840ae35c-2ee0-4202-a90b-f3e4a5d69dab
+
+	/// Each holdout prediction uses only the three preceding period values, but retained revisions are not vintage-correct.
+	measure 'Backtest Forecast USD' = SUM('ForecastBacktest'[Predicted Value])
+		formatString: $#,##0.00
+		lineageTag: 1df6d377-a956-4529-ac4a-fcf2b0289431
+
+	/// Previous-month naive forecast for each retrospective holdout.
+	measure 'Naive USD' = SUM('ForecastBacktest'[Naive Value])
+		formatString: $#,##0.00
+		lineageTag: e98cb100-9f26-427d-9626-d663881ce7bd
+
+	/// Sum of absolute retrospective holdout errors.
+	measure 'Absolute Error USD' = SUM('ForecastBacktest'[Error Value])
+		formatString: $#,##0.00
+		lineageTag: bbef99a8-89b7-4545-bf06-414c061a7f7e
+
+	column Date
+		dataType: dateTime
+		lineageTag: b9e338da-18ff-4205-b09c-b228f8dc710b
+		sourceColumn: Date
+
+	column Period
+		dataType: string
+		lineageTag: 6a2e33b9-f5bf-47dd-ab7b-2503c0c8bb0f
+		sourceColumn: Period
+
+	column 'Actual Value'
+		dataType: decimal
+		isHidden
+		lineageTag: 63680b37-d0af-4cc6-b1e9-5fe588318a8a
+		sourceColumn: Actual
+
+	column 'Predicted Value'
+		dataType: decimal
+		isHidden
+		lineageTag: fa2a8c79-51a3-4038-9bc8-ae01bfa101d4
+		sourceColumn: Predicted
+
+	column 'Naive Value'
+		dataType: decimal
+		isHidden
+		lineageTag: cef7d698-6f0d-4387-b680-1296e54d7024
+		sourceColumn: Naive
+
+	column 'Error Value'
+		dataType: decimal
+		isHidden
+		lineageTag: 401c68f3-e2c1-4d48-b990-9fc206a92856
+		sourceColumn: AbsoluteError
+
+	column 'Naive Error Value'
+		dataType: decimal
+		isHidden
+		lineageTag: 04f79c52-7c78-44b4-bd3d-6567c28f64b4
+		sourceColumn: NaiveAbsoluteError
+
+	column 'Training Through'
+		dataType: string
+		lineageTag: e6d27491-9f11-40f4-ac7f-664ac01eaf82
+		sourceColumn: TrainingThrough
+
+	column Basis
+		dataType: string
+		lineageTag: 67404b5c-3b25-44ee-8b2e-88ab81585b00
+		sourceColumn: Basis
+
+	partition ForecastBacktest = entity
+		mode: directLake
+		source
+			entityName: demo_forecastbacktest_75b4187f7d3f
+			schemaName: demo
+			expressionSource: 'DirectLake - ZavaFinOpsDemo'
+

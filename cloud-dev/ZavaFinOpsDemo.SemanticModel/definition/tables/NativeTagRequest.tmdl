@@ -1,0 +1,61 @@
+/// Six fixed fictional demo tag pairs. Before-values are last-probe evidence, not a current execution preview. No arbitrary resource URL or tag key.
+table NativeTagRequest
+	lineageTag: a21c2b8a-38c8-461c-b734-6b2d877a80f2
+
+	/// Report confirmation input only. Flow must independently verify exact template, resource, identity and request before Merge.
+	measure Confirmation = IF(SELECTEDVALUE('Confirmation'[Confirmed],FALSE()),"Confirmed","Not confirmed")
+		formatString: @
+		lineageTag: 44444d31-639c-4334-94a1-3be7f035aa3b
+
+	/// Selected target resource ID across all 854 billed resources.
+	measure 'Selected Resource ID' = COALESCE(SELECTEDVALUE('ResourceInventory'[Resource ID]), SELECTEDVALUE('NativeTagRequest'[Resource ID]), "/subscriptions/00000000-0000-0000-0000-000000000002/resourceGroups/RG-fabric/providers/Microsoft.Fabric/capacities/astoriafabricnorthcentralus")
+		formatString: @
+		lineageTag: 6cd1e7ad-5fb3-45ee-8571-08151b0b92e9
+
+	/// User-selected or manually edited tag key.
+	measure 'Selected Tag Key' = COALESCE(SELECTEDVALUE('NativeTagRequest'[Tag]), "environment")
+		formatString: @
+		lineageTag: 7de2f8be-6ac4-46ff-9682-19262c1c03fa
+
+	/// User-selected or manually edited proposed tag value.
+	measure 'Selected Proposed Value' = COALESCE(SELECTEDVALUE('NativeTagRequest'[Proposed Value]), "demo")
+		formatString: @
+		lineageTag: 8ef3a9cf-7bd5-47aa-a793-2a373d2d14ab
+
+	column 'Resource ID'
+		dataType: string
+		lineageTag: f8099020-80bf-4534-8064-e73a3512c894
+		sourceColumn: ResourceId
+
+	column 'Proposal ID'
+		dataType: string
+		lineageTag: b26aea8c-4030-4ad3-bde7-fcc66193b6e4
+		sourceColumn: ProposalId
+
+	column Tag
+		dataType: string
+		lineageTag: 96ee1e99-6f50-4f56-97c4-e5f6789beede
+		sourceColumn: Tag
+
+	column 'Current Value'
+		dataType: string
+		lineageTag: 64387f0a-3d48-48cf-bdac-97e793aeed47
+		sourceColumn: CurrentValue
+
+	column 'Proposed Value'
+		dataType: string
+		lineageTag: aee182c6-8aaa-4e9d-8850-449778442916
+		sourceColumn: ProposedValue
+
+	column 'Observation Basis'
+		dataType: string
+		lineageTag: 0897f0fa-39cd-4362-9e77-0b06c4c62179
+		sourceColumn: ObservationBasis
+
+	partition NativeTagRequest = entity
+		mode: directLake
+		source
+			entityName: demo_nativetagrequest_75b4187f7d3f
+			schemaName: demo
+			expressionSource: 'DirectLake - ZavaFinOpsDemo'
+

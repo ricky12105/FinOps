@@ -1,0 +1,44 @@
+/// Daily calendar covering financial history, operational windows and modeled forward horizon.
+table Calendar
+	lineageTag: 2d64077e-df24-4188-92cc-1278960b2ebd
+	dataCategory: Time
+
+	column Date
+		dataType: dateTime
+		isUnique
+		isKey
+		formatString: yyyy-MM-dd
+		lineageTag: f260cb91-7758-4b87-9817-475d65e52bd4
+		sourceColumn: Date
+
+	column 'Month Start'
+		dataType: dateTime
+		formatString: MMM yyyy
+		lineageTag: f4202f36-b143-4c58-bc39-248d7d7768e9
+		sourceColumn: MonthStart
+
+	column Period
+		dataType: string
+		lineageTag: ae05e7e1-051e-42c9-898a-4b50e7dcbb34
+		sourceColumn: Period
+
+	column Year
+		dataType: int64
+		lineageTag: 9d5fc5d1-016e-4cce-a703-4c742004f8cd
+		summarizeBy: none
+		sourceColumn: Year
+
+	column 'Month Number'
+		dataType: int64
+		isHidden
+		lineageTag: be0aaaff-d143-4377-9e58-8b5a33b7cea4
+		summarizeBy: none
+		sourceColumn: MonthNumber
+
+	partition Calendar = entity
+		mode: directLake
+		source
+			entityName: demo_calendar_75b4187f7d3f
+			schemaName: demo
+			expressionSource: 'DirectLake - ZavaFinOpsDemo'
+

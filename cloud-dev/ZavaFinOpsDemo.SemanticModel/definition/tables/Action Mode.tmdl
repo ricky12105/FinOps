@@ -1,0 +1,16 @@
+/// Disconnected mutually exclusive action mode selector; selection does not execute a business action.
+table 'Action Mode'
+	lineageTag: 76d6e442-f02a-4a95-8831-c20744ea858f
+
+	column Mode
+		dataType: string
+		lineageTag: 1e9ca2a7-ee63-46b8-a386-98e01e69db95
+		sourceColumn: Mode
+
+	partition 'Action Mode' = entity
+		mode: directLake
+		source
+			entityName: demo_action_mode_75b4187f7d3f
+			schemaName: demo
+			expressionSource: 'DirectLake - ZavaFinOpsDemo'
+

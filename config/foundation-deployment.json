@@ -1,0 +1,26 @@
+{
+  "customerId": "zava-demo",
+  "workspaceId": "00000000-0000-0000-0000-000000000003",
+  "capacityId": "00000000-0000-0000-0000-000000000004",
+  "observedCapacitySku": "F4",
+  "lakehouseId": "00000000-0000-0000-0000-000000000005",
+  "lakehouseName": "ZavaFinOpsFoundation",
+  "sqlEndpointId": "00000000-0000-0000-0000-000000000006",
+  "notebookId": "00000000-0000-0000-0000-000000000017",
+  "notebookName": "ZavaFinOpsFoundationValidate",
+  "firstValidationJobId": "00000000-0000-0000-0000-000000000018",
+  "versionId": "07c218351a4567d461a67f7fd2e53b032f1d95cf027abbd99e14e872857e389d",
+  "bundleId": "d340e9949425b834740c095a2a04ba22b44a9cf9d33e0ab56974ebb6650c7ade",
+  "bundleSha256": "86e34351d75ef3baba1b71d26118daf9141b1ffe2599ed9c951100de9b2adac1",
+  "coreSha256": "68db6de05db69e8b23c54038468767711c5ae1fbef20127785a15550a7dfa022",
+  "adapterSha256": "ad8033bd8d6573831461c5f457815eb4dbbe0a901d3ea68449d591220fc13f7b",
+  "filesRoot": "Files/foundation/customers/zava-demo",
+  "tables": {
+    "silver": "silver.charges_07c218351a4567d4",
+    "daily": "gold.daily_07c218351a4567d4",
+    "monthly": "gold.monthly_07c218351a4567d4",
+    "validation": "control.validation_07c218351a4567d4"
+  },
+  "publicationStatus": "Unpublished candidate",
+  "scheduling": "Manual only"
+}
