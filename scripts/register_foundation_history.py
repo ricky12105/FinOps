@@ -40,7 +40,7 @@ def register(recovery: Path | str, output: Path | str) -> dict[str, Any]:
     inventory = read_json(recovery_dir / "inventory.json")
     native = read_json(recovery_dir / "native-query-2025-10_2026-09.json")["properties"]
     columns = [column["name"] for column in native["columns"]]
-    native_rows = [dict(zip(columns, row)) for row in native["rows"]]
+    native_rows = [dict(zip(columns, row, strict=True)) for row in native["rows"]]
     if native.get("nextLink") or len(native_rows) != 12 or len(receipt["closedHistorySelection"]) != 12:
         raise ValueError("Expected twelve complete closed-month comparisons")
     native_costs = {row["BillingMonth"][:7]: str(row["Cost"]) for row in native_rows if row["Currency"] == receipt["currency"]}

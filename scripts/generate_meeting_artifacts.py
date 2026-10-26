@@ -387,7 +387,7 @@ def build_pptx():
          "• Evaluates FinOps Toolkit v14 selectively rather than forcing heavy ADF/ADX templates.\n• Runs on existing Fabric F4 capacity with single-executor Spark & Direct Lake.\n• Grounded read-only ZavaFinOps_Agent over all 27 tables & 53 measures.", C_AMBER),
     ]
     coords = [(0.5, 1.25), (6.75, 1.25), (0.5, 4.25), (6.75, 4.25)]
-    for (lx, ly), (ptitle, pval, pbody, pcol) in zip(coords, pillars):
+    for (lx, ly), (ptitle, pval, pbody, pcol) in zip(coords, pillars, strict=True):
         add_card(s2, lx, ly, 6.05, 2.75, ptitle, pval, pbody, pcol)
 
     # Slide 3: Visual Architecture / Marketecture Slide (What's Built + Future Real-Time & Operations Agent HOL)

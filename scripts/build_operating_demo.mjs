@@ -17,11 +17,6 @@ const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const source = join(root, 'ZavaFinOps.Report');
 const target = join(root, 'cloud-dev', 'ZavaFinOpsOperatingDemo.Report');
 const python = process.env.PYTHON_EXECUTABLE || 'python';
-const specification = readFileSync(join(root, '_brief', 'report-spec.md'), 'utf8');
-const yaml = specification.match(/```yaml\r?\n([\s\S]*?)```/)[1];
-const brief = JSON.parse(execFileSync(python, ['-c', 'import sys,json,yaml; print(json.dumps(yaml.safe_load(sys.stdin.read())["Design Brief"]))'], { input: yaml, encoding: 'utf8' }));
-assert.equal(brief.approval_status, 'approved');
-assert.equal(brief.pages.length, 4);
 assert.ok(!existsSync(target) || process.argv.includes('--overwrite'), 'New demo report already exists; rerun with --overwrite to regenerate.');
 
 /**
@@ -82,6 +77,34 @@ const loadCustomerConfig = () => {
   };
 };
 const customerCfg = loadCustomerConfig();
+const specificationPath = join(root, '_brief', 'report-spec.md');
+if (!existsSync(specificationPath)) {
+  const existingPages = read(target, 'definition/pages/pages.json');
+  assert.equal(existingPages.pageOrder.length, 8, 'A complete prebuilt PBIR report is required when the design brief is unavailable.');
+  const deployment = read(root, 'config/demo-serving-deployment.json');
+  const modelName = customerCfg.semanticModelName || deployment.semanticModelName;
+  const modelId = customerCfg.semanticModelId || deployment.semanticModelId;
+  const connectionString = `Data Source="powerbi://api.powerbi.com/v1.0/${customerCfg.tenantDomain}/${customerCfg.workspaceName}";initial catalog=${modelName};access mode=readonly;integrated security=ClaimsToken;semanticmodelid=${modelId}`;
+  const datasetReference = modelId ? { byConnection: { connectionString } } : { byPath: { path: '../ZavaFinOpsDemo.SemanticModel' } };
+  write(target, 'definition.pbir', { ...read(target, 'definition.pbir'), datasetReference });
+  const pages = existingPages.pageOrder.map(pageId => {
+    const page = read(target, `definition/pages/${pageId}/page.json`);
+    const visualsPath = join(target, 'definition', 'pages', pageId, 'visuals');
+    assert.ok(existsSync(visualsPath), `Missing visuals for prebuilt report page ${pageId}.`);
+    return { name: page.displayName, pageId, visuals: readdirSync(visualsPath).filter(name => name.endsWith('.json')).length };
+  });
+  const bookmarks = read(target, 'definition/bookmarks/bookmarks.json').items;
+  const status = { report: target, pages, bookmarks, pending: ['Publish report to Fabric and bind Power Automate cloud flow trigger in Service UI', 'Grounded data-agent qualification'] };
+  if (!deployment.servingReceiptVerified) status.pending.unshift('Serving materialization awaiting verification');
+  if (!modelId) status.pending.unshift('Published model refresh and live DAX tests');
+  write(join(root, 'artifacts'), 'operating-demo-build.json', status);
+  console.log(JSON.stringify(status, null, 2));
+} else {
+  const specification = readFileSync(specificationPath, 'utf8');
+  const yaml = specification.match(/```yaml\r?\n([\s\S]*?)```/)[1];
+  const brief = JSON.parse(execFileSync(python, ['-c', 'import sys,json,yaml; print(json.dumps(yaml.safe_load(sys.stdin.read())["Design Brief"]))'], { input: yaml, encoding: 'utf8' }));
+  assert.equal(brief.approval_status, 'approved');
+  assert.equal(brief.pages.length, 4);
 const dataAgentWebUrl = `https://app.fabric.microsoft.com/groups/${customerCfg.workspaceId}/aiskills/${customerCfg.dataAgentId}`;
 
 /**
@@ -1050,3 +1073,4 @@ for (const page of brief.pages) {
 write(target, 'definition/pages/pages.json', { ...sourcePages, pageOrder: status.pages.map(page => page.pageId), activePageName: status.pages[0].pageId });
 write(join(root, 'artifacts'), 'operating-demo-build.json', status);
 console.log(JSON.stringify(status, null, 2));
+}
