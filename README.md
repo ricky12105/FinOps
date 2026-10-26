@@ -7,7 +7,7 @@ A customer-owned FinOps, multi-platform observability, anomaly detection, and go
 ## Quick Links
 
 - **[Customer Dev Setup & Deployment Guide](docs/customer-setup-guide.md)** — 5-minute sandbox quickstart (`--mode sample`), live data onboarding (`--mode live`), PBIR/TMDL rebinding, and custom RBAC setup.
-- **[Executive Leave-Behind & CSA Engagement Charter](docs/customer-executive-leave-behind.md)** — Reference architecture, semantic guardrails, and FinOps Hub/FOCUS comparison.
+- **[Executive Leave-Behind](docs/customer-executive-leave-behind.md)** — Reference architecture, semantic guardrails, and FinOps Hub/FOCUS comparison.
 - **[Architecture Baseline](docs/architecture.md)** — Foundational design principles, source contracts, etc.
 - **[Security Policy & Governance Boundaries](SECURITY.md)** — Least-privilege RBAC (`Microsoft.Resources/tags/read` & `write` only), `Merge`-only tag semantics, SSRF/ZipSlip hardening, and CodeQL gates.
 
