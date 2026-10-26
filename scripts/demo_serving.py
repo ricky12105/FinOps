@@ -153,7 +153,7 @@ def sql_read(server: str, database: str, statement: str, subscription_id: str | 
         try:
             cursor.execute(statement)
             columns = [column[0] for column in cursor.description]
-            rows = [dict(zip(columns, row)) for row in cursor.fetchall()]
+            rows = [dict(zip(columns, row, strict=True)) for row in cursor.fetchall()]
             if len(rows) >= 10000:
                 raise ValueError("Read-only serving extraction exceeded its row bound")
             return rows
@@ -592,7 +592,7 @@ def build_serving(output: Path | str, sample: bool = False) -> dict[str, Any]:
             contexts.append((row["BusinessUnit"], row["Initiative"], row["Project"], row["Tool"], basis))
     contexts = sorted(set(contexts))
     context_keys = {value: index for index, value in enumerate(contexts, start=1)}
-    tables["BusinessContext"] = [dict(zip(("BusinessUnit", "Initiative", "Project", "Tool", "AttributionBasis"), values), Key=index) for values, index in context_keys.items()]
+    tables["BusinessContext"] = [dict(zip(("BusinessUnit", "Initiative", "Project", "Tool", "AttributionBasis"), values, strict=True), Key=index) for values, index in context_keys.items()]
     tables["Financial"] = []
     with localcontext() as context:
         context.prec = 100

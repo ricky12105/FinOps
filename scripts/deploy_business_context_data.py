@@ -58,8 +58,16 @@ def load_demo_data(
     if cursor.fetchone()[0]:
         raise RuntimeError("Assignments already exist. Refusing to replace resource/catalog seed data.")
 
-    for table in ("BusinessContextGrant", "BusinessContextOption", "BusinessContextResource", "DemoBilling", "DemoCalendar", "DemoSnapshot", "DemoContextSource"):
-        cursor.execute(f"DELETE FROM dbo.{table}")
+    for statement in (
+        "DELETE FROM dbo.BusinessContextGrant",
+        "DELETE FROM dbo.BusinessContextOption",
+        "DELETE FROM dbo.BusinessContextResource",
+        "DELETE FROM dbo.DemoBilling",
+        "DELETE FROM dbo.DemoCalendar",
+        "DELETE FROM dbo.DemoSnapshot",
+        "DELETE FROM dbo.DemoContextSource",
+    ):
+        cursor.execute(statement)
 
     cursor.executemany(
         "INSERT dbo.DemoContextSource (TenantId, ContextKey, ResourceKey, Resource, ResourceId, ResourceGroup, Service, Platform, BusinessUnit, Initiative, Project, Tool, Attribution, CostScope) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
