@@ -55,7 +55,8 @@ def query_sql(config: dict[str, Any], name: str) -> tuple[str, str]:
     table, time_field, order, fields = SOURCES[name]
     lower = "" if name == "warehouses" else f" AND {time_field} >= '{start}'"
     where = f"workspace_id = '{workspace}'{lower} AND {time_field} < '{end}'"
-    return f"SELECT {', '.join(fields)} FROM {table} WHERE {where}", order
+    # The table and projection come from SOURCES; dates and workspace ID are parsed and validated above.
+    return f"SELECT {', '.join(fields)} FROM {table} WHERE {where}", order  # noqa: S608  # nosec B608
 
 
 def cli_query(config: dict[str, Any], sql: str) -> tuple[list[dict[str, Any]], bytes]:
@@ -98,7 +99,7 @@ def extract(config_path, destination):
     datasets = {}
     for name in SOURCES:
         sql, order = query_sql(config, name)
-        count_sql = f"SELECT COUNT(*) AS row_count FROM ({sql}) scoped"
+        count_sql = f"SELECT COUNT(*) AS row_count FROM ({sql}) scoped"  # noqa: S608  # nosec B608
         count_rows, count_bytes = cli_query(config, count_sql)
         expected = int(count_rows[0]["row_count"])
         if expected > config["maximumRowsPerDataset"]:
@@ -106,7 +107,7 @@ def extract(config_path, destination):
         immutable_json(folder / f"{name}-count.json", count_rows)
         parts = []
         for offset in range(0, expected, config["pageSize"]):
-            page_sql = f"SELECT to_json(struct(*)) AS payload FROM ({sql} ORDER BY {order} LIMIT {config['pageSize']} OFFSET {offset}) page"
+            page_sql = f"SELECT to_json(struct(*)) AS payload FROM ({sql} ORDER BY {order} LIMIT {config['pageSize']} OFFSET {offset}) page"  # noqa: S608  # nosec B608
             rows, payload = cli_query(config, page_sql)
             if len(rows) != min(config["pageSize"], expected - offset):
                 raise ValueError("Incomplete or truncated Databricks export page")
@@ -177,7 +178,7 @@ def aggregate_usage(rows):
         for row in rows:
             key = (row["customer_id"], row["workspace_id"], row["usage_date"], row["sku_name"], row["usage_unit"], row["billing_origin_product"], row["attribution_type"], row["attribution_id"])
             if key not in buckets:
-                buckets[key] = dict(zip(("customer_id", "workspace_id", "usage_date", "sku_name", "usage_unit", "billing_origin_product", "attribution_type", "attribution_id"), key), usage_quantity=Decimal(0), usage_records=0, financial_treatment="Operational DBUs; not billed cost")
+                buckets[key] = dict(zip(("customer_id", "workspace_id", "usage_date", "sku_name", "usage_unit", "billing_origin_product", "attribution_type", "attribution_id"), key, strict=True), usage_quantity=Decimal(0), usage_records=0, financial_treatment="Operational DBUs; not billed cost")
             buckets[key]["usage_quantity"] += row["usage_quantity"]
             buckets[key]["usage_records"] += 1
     return list(buckets.values())
@@ -188,7 +189,7 @@ def aggregate_queries(rows):
     for row in rows:
         key = (row["customer_id"], row["workspace_id"], row["start_time"][:10], row.get("warehouse_id"), row["execution_status"])
         if key not in buckets:
-            buckets[key] = dict(zip(("customer_id", "workspace_id", "query_date", "warehouse_id", "execution_status"), key), statement_count=0, execution_duration_ms=0, total_duration_ms=0, read_bytes=0)
+            buckets[key] = dict(zip(("customer_id", "workspace_id", "query_date", "warehouse_id", "execution_status"), key, strict=True), statement_count=0, execution_duration_ms=0, total_duration_ms=0, read_bytes=0)
         bucket = buckets[key]
         bucket["statement_count"] += 1
         for field in ("execution_duration_ms", "total_duration_ms", "read_bytes"):

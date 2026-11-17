@@ -42,7 +42,7 @@ class DemoServingTests(unittest.TestCase):
         self.assertEqual(spark_serving_path("/lakehouse/default/Files/demo-serving/version/verified/action_mode.parquet"),
                          "Files/demo-serving/version/verified/action_mode.parquet")
         with self.assertRaises(ValueError):
-            spark_serving_path("/tmp/action_mode.parquet")
+            spark_serving_path("/outside/action_mode.parquet")
 
     def test_assignment_is_effective_dated_and_fixture_gate_is_respected(self):
         source = {"candidates": [{"ResourceId": "/test", "ResourceKey": "resource", "TenantId": "tenant"}],

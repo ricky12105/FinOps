@@ -36,6 +36,11 @@ class DatabricksMedallionTests(unittest.TestCase):
         self.assertIn("workspace_id = '123'", sql)
         self.assertEqual(order, "statement_id")
 
+    def test_query_scope_rejects_sql_injection(self):
+        config = {**self.manifest, "sourceWorkspaceId": "123' OR 1=1 --"}
+        with self.assertRaisesRegex(ValueError, "Invalid source scope"):
+            query_sql(config, "queries")
+
     def test_window_and_units_are_blocking(self):
         for updates in ({"usage_date": "2026-07-01"}, {"usage_unit": "TOKEN"}):
             with self.subTest(updates=updates), self.assertRaises(ValueError):

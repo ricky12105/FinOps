@@ -241,13 +241,13 @@ def safe_urlopen(
 ) -> tuple[int, dict[str, str], bytes]:
     """Execute an HTTPS request only after validating the URL against the SSRF host allowlist."""
     validated_url = validate_https_url(url, allowed_hosts=allowed_hosts)
-    req = urllib.request.Request(
+    req = urllib.request.Request(  # noqa: S310
         validated_url,
         data=body,
         method=method,
         headers=headers or {},
     )
-    with urllib.request.urlopen(req, timeout=timeout) as resp:  # nosec B310
+    with urllib.request.urlopen(req, timeout=timeout) as resp:  # noqa: S310  # nosec B310
         status_code = int(resp.status)
         resp_headers = {k.lower(): v for k, v in resp.headers.items()}
         payload = resp.read()
